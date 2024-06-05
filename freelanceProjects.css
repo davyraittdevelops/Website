@@ -1,0 +1,106 @@
+:root {
+    --dark-blue: #0400C4;
+    --light-blue: #807FBC;
+    --white: #FFF4ED;
+    --light-black: #333;
+    --orange: #FF825A;
+
+    --videoHeight: 500px;
+    --videowidth: 500px;
+    --projectHeadingFontSize: 28px;
+    --projectParagraphFontSize: 20px;
+}
+
+video {
+    max-height: var(--videoHeight);
+    max-width: var(--videowidth);
+}
+
+/* Code For Freelancing Heading Starts */
+.freelancing {
+    margin: 32px;
+}
+
+.freelancingHeading {
+    display: inline;
+    margin: 16px 16px 0 16px;
+    color: var(--dark-blue);
+    font-family: "Acme";
+    font-size: 32px;
+}
+
+.freelancingHeading p {
+    color: var(--light-black);
+    font-size: 20px;
+}
+
+.freelancingHeadingLine {
+    content: " ";
+    height: 2px;
+    width: 100%;
+    background-color: var(--orange);
+}
+
+/* Code For Freelancing Heading Ends */
+
+/* Code For Projects Starts */
+
+.freelancingProjects {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    margin: 24px;
+}
+
+.freelancingProjects h2 {
+    color: var(--dark-blue);
+    font-family: "Abril Fatface";
+    display: inline;
+    margin: 4px;
+    font-size: var(--projectHeadingFontSize);
+}
+
+.freelancingProjects p {
+    color: var(--light-black);
+    font-family: "Acme";
+    display: block;
+    margin: 16px 0px;
+    font-size: var(--projectParagraphFontSize);
+}
+
+.freelancingProject1 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.freelancingProject1,
+.freelancingProject2,
+.freelancingProject3,
+.freelancingProject4,
+.freelancingProject5 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 32px 8px;
+}
+.freelancingProject1Heading,
+.freelancingProject2Heading,
+.freelancingProject3Heading,
+.freelancingProject4Heading,
+.freelancingProject5Heading {
+    align-self: flex-start;
+}
+
+/* Code For Projects Ends */
+
+@media screen and (max-width: 550px){
+    :root{
+    --videoHeight: 400px;
+    --videowidth: 400px;
+    }
+}

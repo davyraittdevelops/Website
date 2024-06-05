@@ -1,0 +1,14 @@
+:root{
+    --dark-blue: #0400C4;
+}
+
+.heading{
+    color: var(--dark-blue);
+    font-family: "Acme";
+    font-size: 56px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 256px 16px;
+}
