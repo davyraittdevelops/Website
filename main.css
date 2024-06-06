@@ -284,6 +284,24 @@ body {
     color: var(--dark-blue);
 }
 
+.socialMedia{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    background-color: black;
+}
+.githubIcon, .linkedinIcon{
+    height: 50px;
+    width: 50px;
+    z-index: 2;
+    margin: 8px;
+}
+.githubIcon{
+    background-color: white;
+    border-radius: 50%;
+}
+
 /* Code For Footer Section Ends */
 
 

@@ -26,22 +26,6 @@
     align-content: center;
 }
 
-.heroDotStyle span {
-    z-index: -3;
-    display: block;
-    margin: 2px;
-    height: 15px;
-    width: 15px;
-    background-color: var(--light-blue);
-    border-radius: 50%;
-}
-
-.heroDotStyle {
-    position: relative;
-    left: -100px;
-    display: flex;
-    flex-direction: row;
-}
 
 .devPic {
     height: var(--heroDevImgHeight);
@@ -263,6 +247,31 @@
 
 /* Code for About me Section Ends */
 
+/* Code For Certifications section starts */
+
+
+.certifications {
+    margin: 16px 32px;
+}
+
+.certificationHeading {
+    display: inline;
+    margin: 16px 16px 0 16px;
+    color: var(--dark-blue);
+    font-family: "Acme";
+    font-size: 32px;
+}
+
+.certificationHeadingLine {
+    content: " ";
+    height: 2px;
+    width: 100%;
+    background-color: var(--orange);
+}
+
+
+/* Code For Certifications section ends */
+
 /* Contact Me Section Starts */
 
 .contactMe {
@@ -283,6 +292,14 @@
     width: 100%;
     background-color: var(--orange);
 }
+.emailContact a{
+    color: var(--dark-blue);
+    transition: 0.5s;
+}
+.emailContact a:hover{
+    color: var(--light-black);
+}
+
 
 /* Contact Me Section Ends */
 
