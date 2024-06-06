@@ -1,0 +1,318 @@
+:root {
+    --dark-blue: #0400C4;
+    --light-blue: #807FBC;
+    --white: #FFF4ED;
+    --light-black: hsl(0, 0%, 20%);
+    --menu-color: #c2c2f0;
+
+    --nav-menuFontSize : 40px;
+    --footerMenuFontSize : 24px;
+    --footerLogoSize : 40px;
+  }
+
+/* 
+
+  Using 3 Fonts::after
+  -> Acme
+  -> Abril Fatface
+  -> Condiment
+
+*/
+
+
+/*  Important to connect to Fonts CDN using these links:
+     paste them in HTML file under <head>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Acme&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Condiment&display=swap" rel="stylesheet">
+*/
+
+/* 
+    HTML Code For Header and Footer: 
+
+    <nav role="navigation" id="navigation">
+        <div id="webTitle">
+            <p id="webTitleText"><a href="/index.html">Davy</a></p>
+        </div>
+        <div id="menuToggle"><input type="checkbox" />
+            <span></span>
+            <span></span>
+            <span></span>
+            <ul id="menu" class="acme-regular">
+                <a href="#">
+                    <li>Home</li>
+                </a>
+                <a href="#">
+                    <li>My Freelance Projects</li>
+                </a>
+                <a href="#">
+                    <li>My Hobby Projects</li>
+                </a>
+            </ul>
+        </div>
+    </nav>
+
+    
+
+    <footer class="footer">
+        <div class="footerBox">
+            <div class="footerLogo">
+                <h1><a href="index.html">Davy's Portfolio</a></h1>
+            </div>
+            <div class="footerMenu">
+                <ul id="footerMenu" class="acme-regular">
+                    <a href="#">
+                        <li>Home</li>
+                    </a>
+                    <a href="#">
+                        <li>My Freelance Projects</li>
+                    </a>
+                    <a href="#">
+                        <li>My Hobby Projects</li>
+                    </a>
+                </ul>
+            </div>
+        </div>
+        <div class="footerCopyrightBox">
+            <p>Copyright &#169; 2024</p>
+        </div>
+    </footer>
+
+
+*/
+
+body {
+    margin: 0;
+    padding: 0;
+    background: var(--white);
+    color: var(--light-black);
+    font-family: "Avenir Next", "Avenir", sans-serif;
+}
+
+.acme-regular {
+    font-family: "Acme", sans-serif;
+    font-weight: 100;
+    font-style: normal;
+}
+
+/* Navigation Menu Code Starts */
+
+#navigation {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 16px;
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    align-items: center;
+    justify-content: space-between;
+
+}
+
+#webTitleText a {
+    font-size: var(--nav-menuFontSize);
+    font-weight: bolder;
+    text-decoration: none;
+    color: var(--light-black);
+    transition: 0.5s;
+    font-family: "Acme";
+}
+
+#webTitleText a:hover {
+    color: var(--dark-blue);
+}
+
+/* Code For Hamburger Menu Starts */
+
+#menuToggle {
+
+    z-index: 1;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+
+#menuToggle a {
+    text-decoration: none;
+    color: var(--light-black);
+    transition: color 0.3s ease;
+}
+
+#menuToggle span:first-child {
+    transform-origin: 0% 0%;
+}
+
+#menuToggle span:nth-last-child(2) {
+    transform-origin: 0% 100%;
+}
+
+#menuToggle input {
+    position: absolute;
+    cursor: pointer;
+    opacity: 0;
+    width: 40px;
+    z-index: 2;
+    /* in order to place the checkbox over the hamburguer */
+    -webkit-touch-callout: none;
+}
+
+#menuToggle span {
+    display: block;
+    /* to ensure that each span element occupies its own line. */
+    width: 33px;
+    height: 4px;
+    margin-bottom: 5px;
+    /* create some spacing between the span elements. */
+    position: relative;
+    /* allow for positioning changes in relation to the parent div.*/
+    background-color: var(--light-black);
+    border-radius: 3px;
+    z-index: 1;
+    /* ensure that the span element is under the checkbox */
+    transition: transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1),
+        background 0.5s cubic-bezier(0.77, 0.2, 0.05, 1), opacity 0.55s ease;
+    transform-origin: 4px 0px;
+    /* set to 4px 0px to specify the center of rotation for the transform property above. */
+}
+
+
+#menuToggle input:checked~span {
+    opacity: 1;
+    transform: rotate(45deg) translate(-2px, -1px);
+    background: var(--light-black);
+}
+
+#menuToggle input:checked~span:nth-last-child(3) {
+    opacity: 0;
+    transform: rotate(0deg) scale(0.2, 0.2);
+}
+
+#menuToggle input:checked~span:nth-last-child(2) {
+    transform: rotate(-45deg) translate(0, -1px);
+}
+
+#menu {
+    position: absolute;
+    left: -300px;
+    width: 250px;
+    margin: -100px 0 0 -50px;
+    padding: 0 50px 50px 50px;
+    padding-top: 100px;
+    background-color: var(--menu-color);
+    list-style-type: none;
+    -webkit-font-smoothing: antialiased;
+    transition: left 0.5s;
+
+}
+
+#menu li {
+    padding: 10px 0;
+    font-size: 22px;
+}
+
+#menuToggle input:checked~ul {
+    left: 40px;
+}
+
+#menuToggle a:hover {
+    color: var(--dark-blue);
+}
+
+/* Code For Hamburger Menu Ends */
+
+/* Navigation Menu Code End */
+
+
+/* Code For Footer Section Starts */
+
+.footer {
+    margin: 16px 0 0 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.footerCopyrightBox {
+    font-family: "Acme";
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 32px;
+    width: 100vw;
+    background-color: black;
+    color: var(--white);
+}
+
+
+.footerBox {
+    background-color: var(--light-blue);
+    width: 100vw;
+    height: 256px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.footerLogo a {
+    text-decoration: none;
+    color: black;
+    transition: 0.5s;
+    font-size: var(--footerLogoSize);
+    font-family: "Abril Fatface", serif;
+}
+
+.footerLogo a:hover {
+    color: var(--dark-blue);
+}
+
+.footerMenu a {
+    text-decoration: none;
+    color: black;
+    transition: 0.5s;
+    font-size: var(--footerMenuFontSize);
+    list-style-type: none;
+}
+
+.footerMenu a:hover {
+    color: var(--dark-blue);
+}
+
+.socialMedia{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    background-color: black;
+}
+.githubIcon, .linkedinIcon{
+    height: 50px;
+    width: 50px;
+    z-index: 2;
+    margin: 8px;
+}
+.githubIcon{
+    background-color: white;
+    border-radius: 50%;
+}
+
+/* Code For Footer Section Ends */
+
+
+@media screen and (max-width: 750px) {
+    :root{
+        --footerMenuFontSize : 20px;
+        --footerLogoSize : 32px;
+    }
+}
+@media screen and (max-width: 500px) {
+    .footerBox{
+        flex-direction: column;
+    }
+}

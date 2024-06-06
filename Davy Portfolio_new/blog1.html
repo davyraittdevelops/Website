@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How I created a fully automated Youtube channel with OpenAI</title>
+    <link rel="stylesheet" href="main.css">
+    <link rel="icon" type="image/x-icon" href="/images/favicon.png">
+    <script src="main.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Acme&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Condiment&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --dark-blue: #0400C4;
+            --light-blue: #807FBC;
+            --white: #FFF4ED;
+            --light-black: #333;
+            --orange: #FF825A;
+        }
+
+        .mainBlog {
+            margin: 100px 32px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .blogHeading {
+            display: inline;
+            margin: 16px 16px 0 16px;
+            color: var(--dark-blue);
+            font-family: "Acme";
+            font-size: 32px;
+        }
+
+        .blogsHeadingLine {
+            content: " ";
+            height: 2px;
+            width: 100%;
+            background-color: var(--orange);
+        }
+
+        .blogsDescription h4 {
+            color: var(--light-black);
+            font-family: "Acme";
+            font-size: 24px;
+        }
+
+        .blogsDescription {
+            color: var(--light-black);
+            font-family: "Acme";
+            font-size: 20px;
+        }
+
+        .blogsDescription a {
+            text-decoration: none;
+            color: var(--dark-blue);
+            transition: 0.5s;
+        }
+
+        .blogsDescription a:hover {
+            color: var(--light-black);
+        }
+
+        .thumbnail {
+            width: 80%;
+            margin: 32px 8px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <nav role="navigation" id="navigation">
+        <div id="webTitle">
+            <p id="webTitleText"><a href="/index.html">Davy</a></p>
+        </div>
+        <div id="menuToggle"><input type="checkbox" />
+            <span></span>
+            <span></span>
+            <span></span>
+            <ul id="menu" class="acme-regular">
+                <a href="/index.html">
+                    <li>Home</li>
+                </a>
+                <a href="/freelanceProjects.html">
+                    <li>My Freelance Projects</li>
+                </a>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="mainBlog">
+        <h1 class="blogHeading">How I created a fully automated Youtube channel with OpenAI</h1>
+        <div class="thumbnail"><img src="/images/blog1_thumbnaill.png" alt="YouTube Channel Image"></div>
+        <div class="blogsHeadingLine"> </div>
+        <div class="blogsDescription">
+            <h4>The Idea Sparks</h4>
+            Hey everyone! I recently stumbled upon some automated YouTube Shorts and
+            wondered, "How tough could it be to create one myself?" So, as a fun side project, I
+            decided to give it a go. This was purely a hobby experiment—I have no plans to turn
+            it into anything serious. But who knows where hobbies can lead, right?
+            <h4>The Automation Magic</h4>
+            Imagine a YouTube channel that operates completely on its own, churning out
+            content while you just sit back and watch. Sounds like a dream? Well, that's exactly
+            what I set out to achieve using OpenAI's advanced tools coupled with some Python
+            scripting.
+            <h4>The Setup</h4>
+            It all starts with a book title. The script grabs a book title and plunges it into the
+            depths of OpenAI, where a detailed book summary is magically concocted. But that’s
+            just the beginning! This text is then transformed into a smooth narration, perfectly
+            suited for YouTube
+            <h4>From Text to Video</h4>
+            This is where things get visually appealing. The script leverages OpenAI’s DALL-E to
+            create an eye-catching thumbnail that just begs to be clicked. Meanwhile, the book
+            summary is given a voiceover transformation via OpenAI’s text-to-speech
+            technology, ensuring our video is not only informative but also pleasant to listen to.
+            <h4>
+                Subtitles and More
+            </h4>
+            What's a video without accessibility? Our script cleverly generates subtitles to make
+            sure everyone can enjoy the content. This combined material—thumbnail, narration,
+            and subtitles—is then seamlessly integrated to produce our final video product.
+            <h4>The YouTube Debut</h4>
+            The real test comes when our newly created video is ready to make its YouTube
+            debut. Using Google's APIs, the script uploads the video, categorizes it, and tags it
+            appropriately to ensure it reaches the intended audience. And just like that, the video
+            is live, accessible to viewers worldwide without any manual intervention.
+            <h4>The Daily Grind? Not Really!</h4>
+            Once everything is in place, the script goes into sleep mode, only waking periodically
+            to process a new book and repeat the cycle. It’s like having a tireless robot as part of
+            your team.
+            <h4>Challenges? Oh, Plenty!</h4>
+            Was this project a breeze? Far from it. Tweaking the API calls, handling unexpected
+            errors, and ensuring consistent video quality took a fair amount of effort and
+            patience
+            <h4>Why It’s Worth It</h4>
+            The outcome has been surprisingly rewarding. I now have a channel that not only
+            educates but entertains, carving out a unique niche among the plethora of YouTube
+            content
+            <h4>What’s Next?</h4>
+            As the channel grows, I plan to enhance the video quality and possibly introduce
+            interactive elements to further engage the viewers. The sky’s the limit!
+            <h4>Final Words</h4>
+            For those of you dreaming of blending technology with creativity, this might be your
+            cue to start. Dive into the fascinating world of APIs, embrace the coding challenges,
+            and who knows? Your automated creation could become the next big hit on
+            YouTube. <br>
+            Check out the code behind this project on <a
+                href="https://github.com/davyraittdevelops/AIYoutubeVideoGenerator/blob/main/main.py">GitHub</a> and the
+            channel itself on <a href="https://www.youtube.com/@SummariesDoneRight-ge8nk">YouTube</a>.
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footerBox">
+            <div class="footerLogo">
+                <h1><a href="index.html">Davy's Portfolio</a></h1>
+            </div>
+            <div class="footerMenu">
+                <ul id="footerMenu" class="acme-regular">
+                    <a href="/index.html">
+                        <li>Home</li>
+                    </a>
+                    <a href="/freelanceProjects.html">
+                        <li>My Freelance Projects</li>
+                    </a>
+                </ul>
+            </div>
+        </div>
+
+        <div class="socialMedia">
+            <div class="socialMediaGithub">
+                <a href="https://github.com/Davyraittdevelops" target="_blank"><img class="githubIcon"
+                        src="/images/github.png" alt="Github Logo"></a>
+            </div>
+            <div class="socialMediaLinkedin">
+                <a href="https://nl.linkedin.com/in/davyraitt123" target="_blank"><img class="linkedinIcon"
+                        src="/images/linkedin.png" alt="LinkedIn Logo"></a>
+            </div>
+        </div>
+        <div class="footerCopyrightBox">
+            <p>Copyright &#169; 2024</p>
+        </div>
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,410 @@
+:root {
+    --dark-blue: #0400C4;
+    --light-blue: #807FBC;
+    --white: #FFF4ED;
+    --light-black: #333;
+    --orange: #FF825A;
+
+    --heroDevImgWidth: 400px;
+    --heroDevImgHeight: 400px;
+    --heroSectionMargin: 40px;
+    --heroBtnsWidth: 350px;
+    --devNameFontSize: 128px;
+    --HithisIsFontSize: 44px;
+    --starSize: 150px;
+    --starTextSize: 32px;
+}
+
+/* Code For Hero Section Starts */
+
+.heroSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: var(--heroSectionMargin);
+    align-content: center;
+}
+
+
+.devPic {
+    height: var(--heroDevImgHeight);
+    width: var(--heroDevImgWidth);
+}
+
+.heroImgBorder {
+    position: absolute;
+    height: var(--heroDevImgHeight);
+    width: var(--heroDevImgWidth);
+    border: 2px solid var(--dark-blue);
+}
+
+.heroImgBanner {
+    position: absolute;
+    z-index: -2;
+    bottom: -30px;
+    left: -30px;
+    height: var(--heroDevImgHeight);
+    width: var(--heroDevImgWidth);
+    border: 2px solid var(--orange);
+}
+
+.heroDetails {
+    width: 100vw;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    align-content: center;
+    justify-content: space-between;
+    margin: 48px 32px;
+}
+
+.heroIntro {
+    flex-basis: 50%;
+    display: flex;
+    width: 100vw;
+    flex-direction: column;
+    align-items: flex-start;
+    align-content: center;
+    justify-content: space-evenly;
+    margin: 16px 32px;
+}
+
+.heroImg {
+    position: relative;
+    flex-basis: 50%;
+}
+
+.heroIntroBtns {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    align-content: center;
+    justify-content: space-evenly;
+}
+
+.heroIntroBtn {
+    font-family: "Acme";
+    width: var(--heroBtnsWidth);
+    font-weight: 100;
+    font-size: 16px;
+    border-radius: 8px;
+    background-color: var(--light-black);
+    color: var(--white);
+    height: 48px;
+    margin: 8px;
+    border: none;
+    transition: 0.5s;
+}
+
+.heroIntroBtns a :hover {
+    background-color: black;
+    cursor: pointer;
+}
+
+.heroIntroTextL1 h1 {
+    font-family: "Condiment", cursive;
+    font-size: var(--HithisIsFontSize);
+    font-weight: 100;
+    color: var(--dark-blue);
+    margin: 0;
+}
+
+.heroIntroTextL2 h1 {
+    position: relative;
+    top: -80px;
+    right: -150px;
+    font-family: "Abril Fatface", serif;
+    font-size: var(--devNameFontSize);
+    color: var(--dark-blue);
+    margin: 8px;
+}
+
+.heroImgStar {
+    text-align: center;
+    color: var(--dark-blue);
+    align-items: center;
+    background-color: var(--orange);
+    display: flex;
+    font-family: "Condiment";
+    font-weight: 400;
+    justify-content: center;
+    margin: 0 auto;
+    position: absolute;
+    transform: rotate(45deg);
+    height: var(--starSize);
+    width: var(--starSize);
+}
+
+.heroImgStar::before,
+.heroImgStar::after {
+    background-color: var(--orange);
+    font-size: var(--starTextSize);
+    content: '';
+    display: block;
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: -1;
+}
+
+.heroImgStar::before {
+    transform: rotate(30deg);
+}
+
+.heroImgStar::after {
+    transform: rotate(60deg);
+}
+
+.heroImgStar h1 {
+    transform: rotate(-45deg);
+    font-size: var(--starTextSize);
+}
+
+.heroImgStarHelper {
+    position: absolute;
+    bottom: 10px;
+    left: -70px;
+    transform: rotate(-24deg);
+}
+
+/* Code For Hero Section Ends */
+
+/* Code for Blogs Section Starts */
+
+.blogs {
+    margin: 100px 32px;
+}
+
+.blogsHeading {
+    display: inline;
+    margin: 16px 16px 0 16px;
+    color: var(--dark-blue);
+    font-family: "Acme";
+    font-size: 32px;
+}
+
+.blogsHeadingLine {
+    content: " ";
+    height: 2px;
+    width: 100%;
+    background-color: var(--orange);
+}
+.mainBlogs{
+    margin: 48px 0px;
+}
+.mainBlogs > div{
+    margin: 8px 0;
+    padding: 8px 16px;
+    border-radius: 8px;
+    display: flex;
+    background-color:#fde9de;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.mainBlogs a{
+    text-decoration: none;
+    font-size: 28px;
+    color: var(--light-black);
+    transition: 0.5s;
+}
+.mainBlogs a:hover{
+    color: var(--light-blue);
+}
+
+.blogSymbol{
+    padding: 8px 16px;
+}
+
+
+/* Code for Blogs Section Ends */
+
+/* Code for About ME Section Starts */
+
+.AboutMe {
+    margin: 16px 32px;
+}
+
+.aboutMeHeading {
+    display: inline;
+    margin: 16px 16px 0 16px;
+    color: var(--dark-blue);
+    font-family: "Acme";
+    font-size: 32px;
+}
+
+.aboutMeHeadingLine {
+    content: " ";
+    height: 2px;
+    width: 100%;
+    background-color: var(--orange);
+}
+
+/* Code for About me Section Ends */
+
+/* Code For Certifications section starts */
+
+
+.certifications {
+    margin: 16px 32px;
+}
+
+.certificationHeading {
+    display: inline;
+    margin: 16px 16px 0 16px;
+    color: var(--dark-blue);
+    font-family: "Acme";
+    font-size: 32px;
+}
+
+.certificationHeadingLine {
+    content: " ";
+    height: 2px;
+    width: 100%;
+    background-color: var(--orange);
+}
+
+
+/* Code For Certifications section ends */
+
+/* Contact Me Section Starts */
+
+.contactMe {
+    margin: 48px 32px;
+}
+
+.contactMeHeading {
+    display: inline;
+    margin: 16px 16px 0 16px;
+    color: var(--dark-blue);
+    font-family: "Acme";
+    font-size: 32px;
+}
+
+.contactMeHeadingLine {
+    content: " ";
+    height: 2px;
+    width: 100%;
+    background-color: var(--orange);
+}
+.emailContact a{
+    color: var(--dark-blue);
+    transition: 0.5s;
+}
+.emailContact a:hover{
+    color: var(--light-black);
+}
+
+
+/* Contact Me Section Ends */
+
+
+
+@media screen and (max-width: 1200px) {
+    :root {
+        --heroDevImgWidth: 300px;
+        --heroDevImgHeight: 300px;
+    }
+}
+
+@media screen and (max-width: 1100px) {
+    :root {
+        --heroBtnsWidth: 300px;
+        --devNameFontSize: 100px;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    :root {
+        --heroBtnsWidth: 270px;
+        --heroDevImgWidth: 270px;
+        --heroDevImgHeight: 270px;
+        --devNameFontSize: 90px;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    :root {
+        --devNameFontSize: 70px;
+    }
+
+    .heroIntroBtns {
+        flex-direction: column;
+    }
+
+    .heroIntro {
+        margin: 16px 64px;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    :root {
+        --heroBtnsWidth: 250px;
+        --heroDevImgWidth: 220px;
+        --heroDevImgHeight: 220px;
+        --HithisIsFontSize: 32px;
+    }
+
+    .heroIntroTextL2 h1 {
+        top: -40px;
+        right: -100px;
+    }
+}
+
+@media screen and (max-width: 630px) {
+    :root {
+        --starSize: 100px;
+        --starTextSize: 20px;
+        --heroBtnsWidth: 200px;
+        --HithisIsFontSize: 30px;
+        --devNameFontSize: 60px;
+        --heroSectionMargin: 32px 8px;
+    }
+
+    .heroDetails {
+        margin: 32px 8px;
+    }
+
+    .heroIntro {
+        margin: 16px 8px;
+    }
+}
+
+
+@media screen and (max-width: 560px) {
+    :root {
+        --heroDevImgWidth: 200px;
+        --heroDevImgHeight: 200px;
+        --heroBtnsWidth: 250px;
+    }
+
+    .heroDetails {
+        flex-direction: column;
+        margin: 32px;
+    }
+
+}
+
+@media screen and (max-width: 350px) {
+    :root {
+        --starSize: 60px;
+        --starTextSize: 12px;
+    }
+
+    .heroDotStyle {
+        left: -70px;
+    }
+
+}
+
+@media screen and (max-width: 300px) {
+    .heroImgStarHelper{
+        bottom: 10px;
+        left: -40px;
+    }
+}

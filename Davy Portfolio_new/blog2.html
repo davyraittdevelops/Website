@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Experimenting with Runecrafting Automation in Old School RuneScape</title>
+    <link rel="stylesheet" href="main.css">
+    <link rel="icon" type="image/x-icon" href="/images/favicon.png">
+    <script src="main.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Acme&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Condiment&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --dark-blue: #0400C4;
+            --light-blue: #807FBC;
+            --white: #FFF4ED;
+            --light-black: #333;
+            --orange: #FF825A;
+        }
+
+        .mainBlog {
+            margin: 100px 32px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .blogHeading {
+            display: inline;
+            margin: 16px 16px 0 16px;
+            color: var(--dark-blue);
+            font-family: "Acme";
+            font-size: 32px;
+        }
+
+        .blogsHeadingLine {
+            content: " ";
+            height: 2px;
+            width: 100%;
+            background-color: var(--orange);
+        }
+
+        .blogsDescription h4 {
+            color: var(--light-black);
+            font-family: "Acme";
+            font-size: 24px;
+        }
+
+        .blogsDescription {
+            color: var(--light-black);
+            font-family: "Acme";
+            font-size: 20px;
+        }
+
+        .blogsDescription a {
+            text-decoration: none;
+            color: var(--dark-blue);
+            transition: 0.5s;
+        }
+
+        .blogsDescription a:hover {
+            color: var(--light-black);
+        }
+
+        code {
+            font-family: monospace;
+            color: crimson;
+        }
+
+        .thumbnail {
+            width: 80%;
+            margin: 32px 8px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <nav role="navigation" id="navigation">
+        <div id="webTitle">
+            <p id="webTitleText"><a href="/index.html">Davy</a></p>
+        </div>
+        <div id="menuToggle"><input type="checkbox" />
+            <span></span>
+            <span></span>
+            <span></span>
+            <ul id="menu" class="acme-regular">
+                <a href="/index.html">
+                    <li>Home</li>
+                </a>
+                <a href="/freelanceProjects.html">
+                    <li>My Freelance Projects</li>
+                </a>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="mainBlog">
+        <h1 class="blogHeading">Experimenting with Runecrafting Automation in Old School RuneScape</h1>
+        <div class="blogsHeadingLine"> </div>
+        <div class="blogsDescription">
+            <h4>A Nostalgic Experiment</h4>
+            I used to spend countless hours on Old School RuneScape, immersed in its vast
+            world. Although I don't play much these days, programming has become one of my new hobbies. So, driven by
+            nostalgia and a newfound passion for coding, I decided to experiment with creating an automated runecrafting
+            script using Tribot. This project was purely for fun and to challenge myself—it was about merging my old
+            love for the game with my new interest in automation.
+
+            <h4>The Script: V1_DavyF2PRunecrafter</h4>
+            The outcome of this nostalgic fusion is "V1_DavyF2PRunecrafter," a script that automates the crafting of all
+            F2P runes in Old School RuneScape. It even handles the logistics of buying supplies, making it a
+            comprehensive automation tool.
+
+
+            <h4>How the Script Works</h4>
+            Here’s a breakdown of the main features and some code snippets that illustrate the script’s functionality:
+
+            <h4>User-Friendly Interface</h4>
+            A GUI allows users to select which runes to craft, enhancing user interaction right from the start. Java:
+            <code lang="java">
+                <pre>
+                SwingUtilities.invokeLater(() -> {
+                    BotStartGUI gui = new BotStartGUI(latch::countDown);
+                    gui.show();
+                });
+                Automated Navigation: Using the DaxWalker API, the script navigates to various game locations, including banks and altars, optimizing travel paths efficiently.
+                
+                java
+                private void initializeDaxWalker() {
+                    try {
+                        String[] apiKeys = Resources.getString("scripts/env.txt").split(",");
+                        this.daxWalker = new DaxWalkerAdapter(apiKeys[0].trim(), apiKeys[1].trim());
+                    } catch (Resources.ResourceNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
+            </pre>
+            </code>
+
+
+
+            <h4>Smart Item Management</h4>
+            The script checks for necessary items in the bank and purchases any missing supplies automatically, ensuring
+            uninterrupted crafting sessions. Java:
+
+            <code>
+                <pre>List&lt;String&gt; missingItems = checkBankForSupplies(selectedRuneType);
+                    if (!missingItems.isEmpty()) {
+                        purchaseMissingItems(missingItems);
+                    }
+                </pre>
+            </code>
+
+            <h4>Challenges and Learning Points</h4>
+            Creating this script was not a walk in the park. It involved deep diving into game mechanics, handling
+            unexpected scenarios, and integrating complex APIs. This journey taught me resilience, the importance of
+            debugging, and gave me a firsthand experience in creating non-trivial automation scripts.
+
+            <h4>Disclaimer and Ethical Considerations</h4>
+            It’s important to note that botting is against the rules in Old School RuneScape and can result in permanent
+            bans. Therefore, I will not be using this script on any live accounts. This project was conducted purely for
+            educational purposes to satisfy my curiosity and passion for programming.
+
+
+            <h4>Closing Thoughts</h4>
+            This project was an exciting way to reconnect with a game I loved while indulging in my passion for
+            programming. For those interested in game scripting or automation, I recommend pursuing similar projects for
+            learning and fun—just remember to respect game rules and use scripts ethically.
+            <br>
+            You can explore the full script and its documentation on <a
+                href="https://github.com/davyraittdevelops/davys-f2p-runecrafter">GitHub</a>.
+
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footerBox">
+            <div class="footerLogo">
+                <h1><a href="index.html">Davy's Portfolio</a></h1>
+            </div>
+            <div class="footerMenu">
+                <ul id="footerMenu" class="acme-regular">
+                    <a href="/index.html">
+                        <li>Home</li>
+                    </a>
+                    <a href="/freelanceProjects.html">
+                        <li>My Freelance Projects</li>
+                    </a>
+                </ul>
+            </div>
+        </div>
+
+        <div class="socialMedia">
+            <div class="socialMediaGithub">
+                <a href="https://github.com/Davyraittdevelops" target="_blank"><img class="githubIcon"
+                        src="/images/github.png" alt="Github Logo"></a>
+            </div>
+            <div class="socialMediaLinkedin">
+                <a href="https://nl.linkedin.com/in/davyraitt123" target="_blank"><img class="linkedinIcon"
+                        src="/images/linkedin.png" alt="LinkedIn Logo"></a>
+            </div>
+        </div>
+        <div class="footerCopyrightBox">
+            <p>Copyright &#169; 2024</p>
+        </div>
+    </footer>
+</body>
+
+</html>
