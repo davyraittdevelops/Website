@@ -31,7 +31,7 @@
             margin: 100px 32px;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
             flex-direction: column;
         }
 
@@ -39,6 +39,7 @@
             display: inline;
             margin: 16px 16px 0 16px;
             color: var(--dark-blue);
+            align-self: center;
             font-family: "Acme";
             font-size: 32px;
         }
@@ -72,9 +73,10 @@
             color: var(--light-black);
         }
 
-        .thumbnail {
-            width: 80%;
-            margin: 32px 8px;
+        .thumbnail img{
+            max-width: 80vw;
+            align-self: center;
+            margin: 16px 8px;
         }
     </style>
 

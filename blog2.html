@@ -28,10 +28,10 @@
         }
 
         .mainBlog {
-            margin: 100px 32px;
+            margin: 16px 32px;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
             flex-direction: column;
         }
 
@@ -40,6 +40,7 @@
             margin: 16px 16px 0 16px;
             color: var(--dark-blue);
             font-family: "Acme";
+            align-self: center;
             font-size: 32px;
         }
 
@@ -72,13 +73,20 @@
             color: var(--light-black);
         }
 
-        code {
+        .code {
             font-family: monospace;
-            color: crimson;
+            color: white;
+            background-color: #333;
+            padding: 16px;
+            border-radius: 8px;
+            margin: 16px 0px;
+            max-width: 90vw;
+            overflow: scroll;
         }
 
         .thumbnail {
-            width: 80%;
+            max-width: 80%;
+            align-self: center;
             margin: 32px 8px;
         }
     </style>
@@ -128,39 +136,43 @@
 
             <h4>User-Friendly Interface</h4>
             A GUI allows users to select which runes to craft, enhancing user interaction right from the start. Java:
-            <code lang="java">
+            <div class="code">
                 <pre>
-                SwingUtilities.invokeLater(() -> {
-                    BotStartGUI gui = new BotStartGUI(latch::countDown);
-                    gui.show();
-                });
-                Automated Navigation: Using the DaxWalker API, the script navigates to various game locations, including banks and altars, optimizing travel paths efficiently.
-                
-                java
-                private void initializeDaxWalker() {
-                    try {
-                        String[] apiKeys = Resources.getString("scripts/env.txt").split(",");
-                        this.daxWalker = new DaxWalkerAdapter(apiKeys[0].trim(), apiKeys[1].trim());
-                    } catch (Resources.ResourceNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                }
-            </pre>
-            </code>
-
+                    <code lang="java">
+                            SwingUtilities.invokeLater(() -> {
+                            BotStartGUI gui = new BotStartGUI(latch::countDown);
+                            gui.show();
+                        });
+                        Automated Navigation: Using the DaxWalker API,
+                        the script navigates to various game locations,
+                        including banks and altars, optimizing travel paths efficiently.
+                        
+                        java
+                        private void initializeDaxWalker() {
+                            try {
+                                String[] apiKeys = Resources.getString("scripts/env.txt").split(",");
+                                this.daxWalker = new DaxWalkerAdapter(apiKeys[0].trim(), apiKeys[1].trim());
+                            } catch (Resources.ResourceNotFoundException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    </code>
+                </pre>
+            </div>
 
 
             <h4>Smart Item Management</h4>
             The script checks for necessary items in the bank and purchases any missing supplies automatically, ensuring
             uninterrupted crafting sessions. Java:
-
-            <code>
-                <pre>List&lt;String&gt; missingItems = checkBankForSupplies(selectedRuneType);
+            <div class="code">
+                <pre>
+                <code>List&lt;String&gt; missingItems = checkBankForSupplies(selectedRuneType);
                     if (!missingItems.isEmpty()) {
                         purchaseMissingItems(missingItems);
                     }
-                </pre>
-            </code>
+                </code>
+            </pre>
+            </div>
 
             <h4>Challenges and Learning Points</h4>
             Creating this script was not a walk in the park. It involved deep diving into game mechanics, handling
