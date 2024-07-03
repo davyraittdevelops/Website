@@ -89,6 +89,21 @@
             align-self: center;
             margin: 32px 8px;
         }
+
+        .banner-image {
+            width: 100%;
+            height: auto;
+            max-height: 500px;
+            overflow: hidden;
+            margin-bottom: 32px;
+        }
+
+        .banner-image img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+
     </style>
 
 </head>
@@ -116,86 +131,347 @@
 
     <section class="mainBlog">
         <h1 class="blogHeading">Experimenting with Runecrafting Automation in Old School RuneScape</h1>
-        <div class="blogsHeadingLine"> </div>
+        <div class="banner-image">
+            <img src="/images/blog2_thumbnail.png" alt="Runecrafting Automation Banner">
+        </div>
+        <div class="blogsHeadingLine"></div>
         <div class="blogsDescription">
             <h4>A Nostalgic Experiment</h4>
-            Hey everyone! I used to spend countless hours on Old School RuneScape, and although I don't play much these
-            days, my new hobby of programming sparked an idea. Driven by nostalgia and my passion for coding, I decided
-            to create an automated runecrafting script using Tribot. This project was just for fun, merging my old love
-            for the game with my new interest in automation.
-
-
+            Hey everyone! I used to spend countless hours on Old School RuneScape, and although I don't play much these days, my new hobby of programming sparked an idea. Driven by nostalgia and my passion for coding, I decided to create an automated runecrafting script using Tribot. This project was just for fun, merging my old love for the game with my new interest in automation. It was a great way to relive some memories while learning more about scripting and game automation.
+    
             <h4>The Script: V1_DavyF2PRunecrafter</h4>
-            The result of this experiment is "V1_DavyF2PRunecrafter," a script that automates crafting all F2P runes in
-            Old School RuneScape. It even handles buying supplies, making it a comprehensive tool.
-
-
-
-            <h4>How the Script Works</h4>
-            Here’s a breakdown of the main features and some code snippets that illustrate the script’s functionality:
-
-            <h4>User-Friendly Interface</h4>
-            The GUI allows users to select which runes to craft, making it interactive right from the start <div
-                class="code">
-                <pre>
-                    <code lang="java">
-                            SwingUtilities.invokeLater(() -> {
-                            BotStartGUI gui = new BotStartGUI(latch::countDown);
-                            gui.show();
-                        });
-                        Automated Navigation: Using the DaxWalker API,
-                        the script navigates to various game locations,
-                        including banks and altars, optimizing travel paths efficiently.
-                        
-                        java
-                        private void initializeDaxWalker() {
-                            try {
-                                String[] apiKeys = Resources.getString("scripts/env.txt").split(",");
-                                this.daxWalker = new DaxWalkerAdapter(apiKeys[0].trim(), apiKeys[1].trim());
-                            } catch (Resources.ResourceNotFoundException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    </code>
-                </pre>
-            </div>
-
-
-            <h4>Smart Item Management</h4>
-            The script checks for necessary items in the bank and purchases any missing supplies automatically, ensuring
-            uninterrupted crafting sessions.
-
-
-            Java:
-            <div class="code">
-                <pre>
-                <code>List&lt;String&gt; missingItems = checkBankForSupplies(selectedRuneType);
-                    if (!missingItems.isEmpty()) {
-                        purchaseMissingItems(missingItems);
-                    }
-                </code>
+            The result of this experiment is "V1_DavyF2PRunecrafter," a script that automates crafting all F2P runes in Old School RuneScape. It even handles buying supplies, making it a comprehensive tool. This script takes care of everything from navigating to the correct locations to managing your inventory and purchasing necessary items. It’s like having a personal assistant in the game.
+    
+            <h4>Getting Started</h4>
+            Before diving into the main loop, the script sets up essential configurations and initializes key components. Here’s how we read the configuration settings:
+    
+            <pre style="background: #2e2e2e; color: #f8f8f2; padding: 10px; border-radius: 5px; overflow-x: auto; font-size: 14px;">
+    <code lang="java">
+    try {
+        JSONObject botSettings = readConfig("botSettings.json");
+        selectedRuneType = botSettings.optString("selectedRuneType", "None");
+        Log.info("Selected Rune Type: " + selectedRuneType);
+    } catch (IOException e) {
+        e.printStackTrace();
+        throwError(e.toString());
+    }
+    </code>
             </pre>
-            </div>
-
+    
+            This part reads the configuration from a JSON file to determine which rune to craft. Next, we initialize the DaxWalker for efficient pathfinding:
+    
+            <pre style="background: #2e2e2e; color: #f8f8f2; padding: 10px; border-radius: 5px; overflow-x: auto; font-size: 14px;">
+    <code lang="java">
+    private void initializeDaxWalker() {
+        try {
+            String[] apiKeys = Resources.getString("scripts/env.txt").split(",");
+            this.daxWalker = new DaxWalkerAdapter(apiKeys[0].trim(), apiKeys[1].trim());
+        } catch (Resources.ResourceNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+    </code>
+            </pre>
+    
+            <h4>Main Loop and Initial Setup</h4>
+            The main loop of the script is where the action happens. It starts by setting up the GUI and waiting for user input to proceed.
+    
+            <pre style="background: #2e2e2e; color: #f8f8f2; padding: 10px; border-radius: 5px; overflow-x: auto; font-size: 14px;">
+    <code lang="java">
+    @Override
+    public void execute(final String args) {
+        final CountDownLatch latch = new CountDownLatch(1);
+    
+        SwingUtilities.invokeLater(() -> {
+            BotStartGUI gui = new BotStartGUI(latch::countDown);
+            gui.show();
+        });
+    
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    
+        initializeDaxWalker();
+        Painting.addPaint(paintListener);
+        startTime = System.currentTimeMillis();
+        Antiban.setScriptAiAntibanEnabled(true);
+        GlobalWalking.setEngine(daxWalker);
+    
+        if (!attemptLogin()) {
+            return;
+        }
+    
+        GlobalWalking.walkToBank();
+    
+        List<String> missingItems = checkBankForSupplies(selectedRuneType);
+        if (!missingItems.isEmpty()) {
+            Log.info("Missing items: " + String.join(", ", missingItems));
+            purchaseMissingItems(missingItems);
+        } else {
+            Log.info("All required supplies for crafting " + selectedRuneType + " are present.");
+        }
+    
+        boolean equippedTiara = withdrawAndEquipTiara(selectedRuneType);
+        switch (selectedRuneType) {
+            case "Craft air runes":
+                craftAirRunes();
+            case "Craft earth runes":
+            case "Craft fire runes":
+            case "Craft body runes":
+        }
+    }
+    </code>
+            </pre>
+    
+            <h4>Crafting Air Runes</h4>
+            Crafting air runes involves several steps, including walking to the Falador bank, withdrawing items, walking to the air altar, crafting runes, and returning to the bank. Here’s how the script manages this process:
+    
+            <pre style="background: #2e2e2e; color: #f8f8f2; padding: 10px; border-radius: 5px; overflow-x: auto; font-size: 14px;">
+    <code lang="java">
+    private void craftAirRunes() {
+        boolean successFullyWalkedToFallyBank = walkToFallyBank();
+        if (!successFullyWalkedToFallyBank) {
+            throwError("Failed to walk to falador bank three times, stopping the script..");
+        }
+    
+        while(true) {
+            List<String> missingItems = checkBankForSupplies(selectedRuneType);
+            if (missingItems.isEmpty()) {
+                boolean succesFullyWGotItemsFromBank = withdrawFromBank("Pure essence", 28);
+                if (!succesFullyWGotItemsFromBank) {
+                    Log.info("Failed to get items from the bank three times, trying to renavigate to bank..");
+                    boolean successFullyWalkedBackToBank = walkToFallyBank();
+                    if (!successFullyWalkedBackToBank) {
+                        throwError("Failed to walk back to falador bank three times, stopping the script..");
+                    }
+                }
+    
+                boolean successFullyWalkedToAirAltar = walkToAirAltar();
+                if (!successFullyWalkedToAirAltar) {
+                    throwError("Failed to walk to the air altar three times, stopping the script..");
+                }
+    
+                boolean interactedWithRuins = interactWithObject("Mysterious ruins", "Enter");
+                if (!interactedWithRuins) {
+                    ensureReturnToBank();
+                    continue;
+                }
+    
+                boolean interactedWithAltar = interactWithObject("Altar", "Craft-rune");
+                if (!interactedWithAltar) {
+                    ensureReturnToBank();
+                    continue;
+                }
+    
+                boolean interactedWithPortal = interactWithObject("Portal", "Use");
+                if (!interactedWithPortal) {
+                    ensureReturnToBank();
+                    continue;
+                }
+    
+                boolean successFullyWalkedBackToBank = walkToFallyBank();
+                if (!successFullyWalkedBackToBank) {
+                    throwError("Failed to walk back to falador bank three times, stopping the script..");
+                }
+    
+                boolean succesFullyDepositedInventory = depositInventoryToBankAndKeepOpen();
+                if (!succesFullyDepositedInventory) {
+                    ensureReturnToBank();
+                    continue;
+                }
+    
+                chanceOfFakeBreak();
+                tripsDone++;
+            } else {
+                boolean purchasedMissingItems = purchaseMissingItems(missingItems);
+                if (!purchasedMissingItems) {
+                    throwError("Failed to purchase items we needed at least three times, stopping script.. ");
+                }
+    
+                boolean successFullyWalkedBackToBank = walkToFallyBank();
+                if (!successFullyWalkedBackToBank) {
+                    throwError("Failed to walk back to falador bank three times, stopping the script..");
+                }
+            }
+        }
+    }
+    </code>
+            </pre>
+    
+            <h4>Buying from the Grand Exchange</h4>
+            An essential part of the script is ensuring that it has all the necessary supplies. The `GrandExchangeHelper` class handles purchasing missing items from the Grand Exchange. Here’s a snippet showing how it places a buy offer and handles retries if the offer does not complete:
+    
+            <pre style="background: #2e2e2e; color: #f8f8f2; padding: 10px; border-radius: 5px; overflow-x: auto; font-size: 14px;">
+    <code lang="java">
+    public static boolean buyItemFromGE(String itemName, int quantity, int initialPrice) {
+        final int maxRetries = 3;
+        final double priceIncreaseFactor = 2;
+        int currentPrice = initialPrice;
+        boolean offerCompleted = false;
+    
+        for (int attempt = 0; attempt < maxRetries; attempt++) {
+            if (!GrandExchange.isOpen() && !GrandExchange.open()) {
+                Log.info("Failed to open the Grand Exchange.");
+                if (attempt < maxRetries - 1) {
+                    Waiting.waitNormal(3000, 1000);
+                    continue;
+                } else {
+                    return false;
+                }
+            }
+    
+            Waiting.waitUntil(9000, GrandExchange::isOpen);
+    
+            GrandExchange.CreateOfferConfig offerConfig = GrandExchange.CreateOfferConfig.builder()
+                    .itemName(itemName)
+                    .quantity(quantity)
+                    .price(currentPrice)
+                    .build();
+    
+            if (!GrandExchange.placeOffer(offerConfig)) {
+                Log.info("Failed to place buy offer for " + itemName + " at price " + currentPrice);
+                if (attempt < maxRetries - 1) {
+                    Waiting.waitNormal(3000, 1000);
+                    continue;
+                } else {
+                    return false;
+                }
+            }
+    
+            Log.info("Buy offer for " + itemName + " placed at price " + currentPrice + ". Waiting for completion...");
+            Waiting.waitNormal(5000, 750);
+    
+            Optional<GrandExchangeOffer> offerOpt = Query.grandExchangeOffers()
+                    .itemNameEquals(itemName)
+                    .stream()
+                    .findFirst();
+    
+            if (offerOpt.isPresent()) {
+                GrandExchangeOffer offer = offerOpt.get();
+                if (offer.getStatus() == GrandExchangeOffer.Status.COMPLETED) {
+                    Log.info("Offer completed.");
+                    if (GrandExchange.collectAll(GrandExchange.CollectMethod.BANK)) {
+                        Log.info("Items collected to bank.");
+                        offerCompleted = true;
+                        break;
+                    }
+                } else {
+                    Log.info("Offer did not complete. Increasing price and retrying...");
+                    currentPrice = (int) (currentPrice * priceIncreaseFactor);
+                    GrandExchange.abort(offer.getSlot());
+                    Waiting.waitNormal(4000, 1000);
+                    GrandExchange.collectAll();
+                }
+            } else {
+                Log.error("Failed to find the placed offer.");
+                return false;
+            }
+        }
+    
+        if (!offerCompleted) {
+            Log.error("Failed to complete the buy offer for " + itemName + " after " + maxRetries + " attempts.");
+            return false;
+        }
+    
+        return true;
+    }
+    </code>
+            </pre>
+    
+            <h4>Interaction with Game Objects</h4>
+            Interacting with various game objects, such as altars and portals, is an essential part of the runecrafting process. The script handles these interactions efficiently, ensuring smooth transitions between different actions.
+    
+            <pre style="background: #2e2e2e; color: #f8f8f2; padding: 10px; border-radius: 5px; overflow-x: auto; font-size: 14px;">
+    <code lang="java">
+    public static boolean interactWithObject(String nameObject, String interactAction) {
+        boolean success = false;
+        for (int attempt = 1; attempt <= 3; attempt++) {
+            Log.info("Attempt " + attempt + " to interact with " + nameObject);
+            success = tryInteractWithObject(nameObject, interactAction);
+            if (success) {
+                return true;
+            }
+            Log.info("Interact somehow failed, waiting a few seconds and retrying again");
+            Waiting.waitNormal(3000, 1000);
+        }
+        throwError("Failed to " + interactAction + " with " + nameObject + " after 3 attempts.");
+        return false;
+    }
+    
+    private static boolean tryInteractWithObject(String nameObject, String interactAction) {
+        boolean areWeThere = Waiting.waitUntil(8000, () -> !MyPlayer.isMoving());
+    
+        Optional<GameObject> gameObject = Query.gameObjects()
+                .maxDistance(15)
+                .nameEquals(nameObject)
+                .actionContains(interactAction)
+                .findFirst();
+    
+        if (!gameObject.isPresent()) {
+            Log.info("GameObject not found.");
+            return false;
+        }
+    
+        Log.info("Found object: " + nameObject);
+        GameObject interactableObject = gameObject.get();
+    
+        if (interactableObject.interact(interactAction)) {
+            Log.info("Attempting to " + interactAction + " with " + nameObject + ".");
+            boolean completedInteraction = false;
+    
+            if (nameObject.equals("Mysterious ruins")) {
+                completedInteraction = waitForNearbyObject("Altar");
+                Log.info("We are now near the altar!");
+            }
+    
+            if (nameObject.equals("Altar")) {
+                completedInteraction = Waiting.waitUntil(9000, () -> !Inventory.contains("Pure essence"));
+                Log.info("Crafted runes! Inventory has no Pure essence anymore");
+            }
+    
+            if (nameObject.equals("Portal")) {
+                completedInteraction = waitForNearbyObject("Mysterious ruins");
+                Log.info("We are now near the ruins again!");
+            }
+    
+            if (completedInteraction) {
+                Log.info("Successfully interacted with " + nameObject + ".");
+                return true;
+            } else {
+                Log.error("Interaction timed out.");
+                return false;
+            }
+        } else {
+            Log.info("Failed to " + interactAction + " with " + nameObject + ".");
+            return false;
+        }
+    }
+    
+    private static boolean waitForNearbyObject(String name) {
+        return Waiting.waitUntil(8000, () -> Query.gameObjects()
+                .nameEquals(name)
+                .maxDistance(15)
+                .findFirst()
+                .isPresent());
+    }
+    </code>
+            </pre>
+    
             <h4>Challenges and Learning Points</h4>
-            Botting is against the rules in Old School RuneScape and can result in permanent bans. I won't be using this
-            script on any live accounts. This project was purely for educational purposes to satisfy my curiosity and
-            passion for programming.
-
-
-
+            Botting is against the rules in Old School RuneScape and can result in permanent bans. I won't be using this script on any live accounts. This project was purely for educational purposes to satisfy my curiosity and passion for programming. Throughout the process, I learned a lot about game automation, handling API interactions, and creating robust scripts that can handle various in-game scenarios.
+    
+            One significant challenge was managing the Grand Exchange interactions. Navigating the Grand Exchange and ensuring successful transactions required careful handling of retries and price adjustments.
+    
             <h4>Closing Thoughts</h4>
-            This project was an exciting way to reconnect with a game I loved while indulging in my passion for
-            programming. For those interested in game scripting or automation, I recommend similar projects for learning
-            and fun—just remember to respect game rules and use scripts ethically. You can explore the full script and
-            its documentation on GitHub.
-
-            <br>
-            You can explore the full script and its documentation on <a
-                href="https://github.com/davyraittdevelops/davys-f2p-runecrafter">GitHub</a>.
-
+            This project was an exciting way to reconnect with a game I loved while indulging in my passion for programming. For those interested in game scripting or automation, I recommend similar projects for learning and fun—just remember to respect game rules and use scripts ethically. This experience has deepened my understanding of both programming and game mechanics.
+    
+            You can explore the full script and its documentation on <a href="https://github.com/davyraittdevelops/davys-f2p-runecrafter">GitHub</a>.
         </div>
     </section>
+    
+    
 
     <footer class="footer">
         <div class="footerBox">

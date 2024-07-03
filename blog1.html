@@ -78,6 +78,21 @@
             align-self: center;
             margin: 16px 8px;
         }
+
+        .banner-image {
+            width: 100%;
+            height: auto;
+            max-height: 500px;
+            overflow: hidden;
+            margin-bottom: 32px;
+        }
+
+        .banner-image img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+
     </style>
 
 </head>
@@ -105,7 +120,9 @@
 
     <section class="mainBlog">
         <h1 class="blogHeading">Automating a YouTube Channel with OpenAI</h1>
-        <div class="thumbnail"><img src="/images/blog1_thumbnaill.png" alt="YouTube Channel Image"></div>
+        <div class="banner-image">
+            <img src="/images/blog1_thumbnaill.png" alt="YouTube Channel Image">
+        </div>
         <div class="blogsHeadingLine"></div>
         <div class="blogsDescription">
             <h4>The Idea</h4>
