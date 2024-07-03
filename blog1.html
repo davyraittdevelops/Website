@@ -1,183 +1,196 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>How I created a fully automated Youtube channel with OpenAI</title>
-    <link rel="stylesheet" href="main.css">
-    <link rel="icon" type="image/x-icon" href="/images/favicon.png">
+    <link rel="stylesheet" href="main.css" />
+    <link rel="icon" type="image/x-icon" href="/images/favicon.png" />
     <script src="main.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Acme&display=swap" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Condiment&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Acme&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Condiment&display=swap"
+      rel="stylesheet"
+    />
 
     <style>
-        :root {
-            --dark-blue: #0400C4;
-            --light-blue: #807FBC;
-            --white: #FFF4ED;
-            --light-black: #333;
-            --orange: #FF825A;
-        }
+      :root {
+        --dark-blue: #0400c4;
+        --light-blue: #807fbc;
+        --white: #fff4ed;
+        --light-black: #333;
+        --orange: #ff825a;
+      }
 
-        body {
-            font-family: "Acme", sans-serif;
-            margin: 0;
-            padding: 0;
-        }
+      .mainBlog {
+        margin: 100px 32px;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        flex-direction: column;
+      }
 
+      .blogHeading {
+        display: inline;
+        margin: 16px 16px 0 16px;
+        color: var(--dark-blue);
+        align-self: center;
+        font-family: "Acme";
+        font-size: 32px;
+      }
+
+      .blogsHeadingLine {
+        content: " ";
+        height: 2px;
+        width: 100%;
+        background-color: var(--orange);
+      }
+
+      .blogsDescription h4 {
+        color: var(--light-black);
+        font-family: "Acme";
+        font-size: 24px;
+      }
+
+      .blogsDescription {
+        color: var(--light-black);
+        font-family: "Acme";
+        font-size: 20px;
+      }
+
+      .blogsDescription a {
+        text-decoration: none;
+        color: var(--dark-blue);
+        transition: 0.5s;
+      }
+
+      .blogsDescription a:hover {
+        color: var(--light-black);
+      }
+
+      .thumbnail img {
+        max-width: 80vw;
+        align-self: center;
+        margin: 16px 8px;
+      }
+
+      .banner-image {
+        width: 100%;
+        height: auto;
+        max-height: 500px;
+        overflow: hidden;
+        margin-bottom: 32px;
+      }
+
+      .banner-image img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+      }
+
+      /* Mobile Friendly Styles */
+      @media (max-width: 768px) {
         .mainBlog {
-            margin: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            flex-direction: column;
+          margin: 20px;
+          width: 90%;
         }
 
         .blogHeading {
-            margin: 16px 0;
-            color: var(--dark-blue);
-            align-self: center;
-            font-family: "Acme";
-            font-size: 32px;
-            text-align: center;
-        }
-
-        .blogsHeadingLine {
-            content: " ";
-            height: 2px;
-            width: 100%;
-            background-color: var(--orange);
-            margin: 16px 0;
-        }
-
-        .blogsDescription h4 {
-            color: var(--light-black);
-            font-family: "Acme";
-            font-size: 24px;
-            margin-top: 16px;
+          font-size: 28px;
+          text-align: center;
         }
 
         .blogsDescription {
-            color: var(--light-black);
-            font-family: "Acme";
-            font-size: 18px;
-            line-height: 1.6;
+          font-size: 18px;
         }
 
-        .blogsDescription a {
-            text-decoration: none;
-            color: var(--dark-blue);
-            transition: 0.5s;
-        }
-
-        .blogsDescription a:hover {
-            color: var(--light-black);
+        .blogsDescription h4 {
+          font-size: 22px;
         }
 
         .thumbnail img {
-            max-width: 80vw;
-            align-self: center;
-            margin: 16px 0;
+          max-width: 90%;
+          margin: 16px auto;
         }
+      }
+    </style>
+  </head>
 
-        .banner-image {
-            width: 100%;
-            height: auto;
-            max-height: 500px;
-            overflow: hidden;
-            margin-bottom: 32px;
-        }
+  <body>
+    <nav role="navigation" id="navigation">
+      <div id="webTitle">
+        <p id="webTitleText"><a href="/index.html">Davy</a></p>
+      </div>
+      <div id="menuToggle">
+        <input type="checkbox" />
+        <span></span>
+        <span></span>
+        <span></span>
+        <ul id="menu" class="acme-regular">
+          <a href="/index.html">
+            <li>Home</li>
+          </a>
+          <a href="/freelanceProjects.html">
+            <li>My Freelance Projects</li>
+          </a>
+        </ul>
+      </div>
+    </nav>
 
-        .banner-image img {
-            width: 100%;
-            height: auto;
-            object-fit: cover;
-        }
+    <section class="mainBlog">
+      <h1 class="blogHeading">Automating a YouTube Channel with OpenAI</h1>
+      <div class="banner-image">
+        <img src="/images/blog1_thumbnaill.png" alt="YouTube Channel Image" />
+      </div>
+      <div class="blogsHeadingLine"></div>
+      <div class="blogsDescription">
+        <h4>The Idea</h4>
+        Hi there! I recently noticed some automated YouTube Shorts and thought,
+        "Why not try making one myself?" So, I decided to take it on as a fun
+        side project. It’s just a hobby for now, but who knows where it might
+        lead! The goal was to create a YouTube channel that runs itself,
+        producing and uploading content with minimal intervention.
 
-        pre {
+        <h4>Automation Overview</h4>
+        Imagine a YouTube channel that runs itself, creating and uploading
+        videos while you relax. Sounds cool, right? That’s what I aimed to
+        achieve using OpenAI’s tools and some Python scripts. The process
+        involves generating book summaries, converting them into audio, creating
+        thumbnails, and finally, stitching everything together into a video. The
+        entire workflow is automated, ensuring a steady stream of content for
+        the channel.
+
+        <h4>Getting Started</h4>
+        The journey begins with selecting a book title. The script takes this
+        title, feeds it to OpenAI, and generates a detailed summary. This step
+        is crucial as it forms the core content of the video. The idea is to
+        provide viewers with concise yet informative book summaries that pique
+        their interest. Here's a sample of how the script grabs the book title
+        and creates a summary:
+
+        <pre
+          style="
             background: #2e2e2e;
             color: #f8f8f2;
             padding: 10px;
             border-radius: 5px;
             overflow-x: auto;
             font-size: 14px;
-            margin-bottom: 16px;
-        }
-
-        @media (max-width: 768px) {
-            .mainBlog {
-                margin: 10px;
-            }
-
-            .blogHeading {
-                font-size: 24px;
-            }
-
-            .blogsDescription h4 {
-                font-size: 20px;
-            }
-
-            .blogsDescription {
-                font-size: 16px;
-            }
-
-            pre {
-                font-size: 12px;
-                padding: 8px;
-            }
-        }
-    </style>
-</head>
-
-
-<body>
-
-    <nav role="navigation" id="navigation">
-        <div id="webTitle">
-            <p id="webTitleText"><a href="/index.html">Davy</a></p>
-        </div>
-        <div id="menuToggle"><input type="checkbox" />
-            <span></span>
-            <span></span>
-            <span></span>
-            <ul id="menu" class="acme-regular">
-                <a href="/index.html">
-                    <li>Home</li>
-                </a>
-                <a href="/freelanceProjects.html">
-                    <li>My Freelance Projects</li>
-                </a>
-            </ul>
-        </div>
-    </nav>
-
-    <section class="mainBlog">
-        <h1 class="blogHeading">Automating a YouTube Channel with OpenAI</h1>
-        <div class="banner-image">
-            <img src="/images/blog1_thumbnaill.png" alt="YouTube Channel Image">
-        </div>
-        <div class="blogsHeadingLine"></div>
-        <div class="blogsDescription">
-            <h4>The Idea</h4>
-            Hi there! I recently noticed some automated YouTube Shorts and thought, "Why not try making one myself?" So, I decided to take it on as a fun side project. It’s just a hobby for now, but who knows where it might lead! The goal was to create a YouTube channel that runs itself, producing and uploading content with minimal intervention.
-    
-            <h4>Automation Overview</h4>
-            Imagine a YouTube channel that runs itself, creating and uploading videos while you relax. Sounds cool, right? That’s what I aimed to achieve using OpenAI’s tools and some Python scripts. The process involves generating book summaries, converting them into audio, creating thumbnails, and finally, stitching everything together into a video. The entire workflow is automated, ensuring a steady stream of content for the channel.
-    
-            <h4>Getting Started</h4>
-            The journey begins with selecting a book title. The script takes this title, feeds it to OpenAI, and generates a detailed summary. This step is crucial as it forms the core content of the video. The idea is to provide viewers with concise yet informative book summaries that pique their interest.
-    
-            Here's a sample of how the script grabs the book title and creates a summary:
-    
-            <pre style="background: #2e2e2e; color: #f8f8f2; padding: 10px; border-radius: 5px; overflow-x: auto; font-size: 14px;">
+          "
+        >
     <code>
     import requests
     import time
@@ -216,13 +229,25 @@
         return "Max retries reached. Unable to generate summary.", []
     </code>
             </pre>
-    
-            <h4>Transforming Text to Video</h4>
-            Once we have the summary, the next step is to transform it into a video. The summary is converted into a voiceover using OpenAI’s text-to-speech capabilities. This involves selecting a suitable voice and ensuring the narration is clear and engaging. At the same time, a thumbnail is created using DALL-E, which helps attract viewers to the video.
-    
-            Here’s how you might convert the summary to speech:
-    
-            <pre style="background: #2e2e2e; color: #f8f8f2; padding: 10px; border-radius: 5px; overflow-x: auto; font-size: 14px;">
+
+        <h4>Transforming Text to Video</h4>
+        Once we have the summary, the next step is to transform it into a video.
+        The summary is converted into a voiceover using OpenAI’s text-to-speech
+        capabilities. This involves selecting a suitable voice and ensuring the
+        narration is clear and engaging. At the same time, a thumbnail is
+        created using DALL-E, which helps attract viewers to the video. Here’s
+        how you might convert the summary to speech:
+
+        <pre
+          style="
+            background: #2e2e2e;
+            color: #f8f8f2;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 14px;
+          "
+        >
     <code>
     from openai import OpenAI
     import random
@@ -266,11 +291,24 @@
         print("Max retries reached. Unable to generate speech.")
     </code>
             </pre>
-    
-            <h4>Generating a Thumbnail</h4>
-            Thumbnails are the first thing viewers see, so they need to be eye-catching. Using OpenAI's DALL-E, we can generate appealing thumbnails that are relevant to the book summary. The process involves crafting a prompt that DALL-E can use to create the image. Here's how it's done:
-    
-            <pre style="background: #2e2e2e; color: #f8f8f2; padding: 10px; border-radius: 5px; overflow-x: auto; font-size: 14px;">
+
+        <h4>Generating a Thumbnail</h4>
+        Thumbnails are the first thing viewers see, so they need to be
+        eye-catching. Using OpenAI's DALL-E, we can generate appealing
+        thumbnails that are relevant to the book summary. The process involves
+        crafting a prompt that DALL-E can use to create the image. Here's how
+        it's done:
+
+        <pre
+          style="
+            background: #2e2e2e;
+            color: #f8f8f2;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 14px;
+          "
+        >
     <code>
     from openai import OpenAI
     import requests
@@ -307,11 +345,24 @@
         print("Max retries reached. Unable to generate thumbnail.")
     </code>
             </pre>
-    
-            <h4>Adding Subtitles</h4>
-            Accessibility is important, so the script also generates subtitles. Subtitles help make the content more inclusive and enhance the viewing experience. This step involves using OpenAI’s Whisper model to transcribe the audio into text and then format it as subtitles. Here's an example of generating subtitles:
-    
-            <pre style="background: #2e2e2e; color: #f8f8f2; padding: 10px; border-radius: 5px; overflow-x: auto; font-size: 14px;">
+
+        <h4>Adding Subtitles</h4>
+        Accessibility is important, so the script also generates subtitles.
+        Subtitles help make the content more inclusive and enhance the viewing
+        experience. This step involves using OpenAI’s Whisper model to
+        transcribe the audio into text and then format it as subtitles. Here's
+        an example of generating subtitles:
+
+        <pre
+          style="
+            background: #2e2e2e;
+            color: #f8f8f2;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 14px;
+          "
+        >
     <code>
     from openai import OpenAI
     import time
@@ -345,11 +396,24 @@
         return None
     </code>
             </pre>
-    
-            <h4>Uploading to YouTube</h4>
-            The final step is uploading the video to YouTube. This involves using Google's YouTube API, which requires proper authentication and handling. The script prepares the video with appropriate metadata, such as title, description, and tags, and then uploads it. Here's a snippet of the upload part:
-    
-            <pre style="background: #2e2e2e; color: #f8f8f2; padding: 10px; border-radius: 5px; overflow-x: auto; font-size: 14px;">
+
+        <h4>Uploading to YouTube</h4>
+        The final step is uploading the video to YouTube. This involves using
+        Google's YouTube API, which requires proper authentication and handling.
+        The script prepares the video with appropriate metadata, such as title,
+        description, and tags, and then uploads it. Here's a snippet of the
+        upload part:
+
+        <pre
+          style="
+            background: #2e2e2e;
+            color: #f8f8f2;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 14px;
+          "
+        >
     <code>
     from google_auth_oauthlib.flow import InstalledAppFlow
     from google.auth.transport.requests import Request
@@ -418,52 +482,69 @@
         print(f"Video ID '{response['id']}' was successfully uploaded.")
     </code>
             </pre>
-    
-            <h4>Challenges</h4>
-            Working with the YouTube API was quite tricky. It’s not always straightforward, and there are many limitations. For example, I had to handle quota limits and complex authorization flows. In one scenario, I had to manage the daily quota effectively to ensure my videos were uploaded without hitting the limits.
-    
-            The OpenAI APIs can also be unreliable at times, resulting in failed requests. To tackle this, I implemented an exponential backoff strategy and automated retries. This ensures that the script can recover from temporary issues and continue working without manual intervention.
-    
-            <h4>Conclusion</h4>
-            This project has been incredibly rewarding. I now have a channel that educates and entertains. As it grows, I plan to improve the video quality and add interactive elements.
-    
-            <br><br>
-            Check out the code behind this project on <a href="https://github.com/davyraittdevelops/AIYoutubeVideoGenerator/blob/main/main.py">GitHub</a> and the channel itself on <a href="https://www.youtube.com/@SummariesDoneRight-ge8nk">YouTube</a>.
-        </div>
+
+        <h4>Challenges</h4>
+        Working with the YouTube API was quite tricky. It’s not always
+        straightforward, and there are many limitations. For example, I had to
+        handle quota limits and complex authorization flows. In one scenario, I
+        had to manage the daily quota effectively to ensure my videos were
+        uploaded without hitting the limits. The OpenAI APIs can also be
+        unreliable at times, resulting in failed requests. To tackle this, I
+        implemented an exponential backoff strategy and automated retries. This
+        ensures that the script can recover from temporary issues and continue
+        working without manual intervention.
+
+        <h4>Conclusion</h4>
+        This project has been incredibly rewarding. I now have a channel that
+        educates and entertains. As it grows, I plan to improve the video
+        quality and add interactive elements.
+
+        <br /><br />
+        Check out the code behind this project on
+        <a
+          href="https://github.com/davyraittdevelops/AIYoutubeVideoGenerator/blob/main/main.py"
+          >GitHub</a
+        >
+        and the channel itself on
+        <a href="https://www.youtube.com/@SummariesDoneRight-ge8nk">YouTube</a>.
+      </div>
     </section>
-    
-    
+
     <footer class="footer">
-        <div class="footerBox">
-            <div class="footerLogo">
-                <h1><a href="index.html">Davy's Portfolio</a></h1>
-            </div>
-            <div class="footerMenu">
-                <ul id="footerMenu" class="acme-regular">
-                    <a href="/index.html">
-                        <li>Home</li>
-                    </a>
-                    <a href="/freelanceProjects.html">
-                        <li>My Freelance Projects</li>
-                    </a>
-                </ul>
-            </div>
+      <div class="footerBox">
+        <div class="footerLogo">
+          <h1><a href="index.html">Davy's Portfolio</a></h1>
         </div>
+        <div class="footerMenu">
+          <ul id="footerMenu" class="acme-regular">
+            <a href="/index.html">
+              <li>Home</li>
+            </a>
+            <a href="/freelanceProjects.html">
+              <li>My Freelance Projects</li>
+            </a>
+          </ul>
+        </div>
+      </div>
 
-        <div class="socialMedia">
-            <div class="socialMediaGithub">
-                <a href="https://github.com/Davyraittdevelops" target="_blank"><img class="githubIcon"
-                        src="/images/github.png" alt="Github Logo"></a>
-            </div>
-            <div class="socialMediaLinkedin">
-                <a href="https://nl.linkedin.com/in/davyraitt123" target="_blank"><img class="linkedinIcon"
-                        src="/images/linkedin.png" alt="LinkedIn Logo"></a>
-            </div>
+      <div class="socialMedia">
+        <div class="socialMediaGithub">
+          <a href="https://github.com/Davyraittdevelops" target="_blank"
+            ><img class="githubIcon" src="/images/github.png" alt="Github Logo"
+          /></a>
         </div>
-        <div class="footerCopyrightBox">
-            <p>Copyright &#169; 2024</p>
+        <div class="socialMediaLinkedin">
+          <a href="https://nl.linkedin.com/in/davyraitt123" target="_blank"
+            ><img
+              class="linkedinIcon"
+              src="/images/linkedin.png"
+              alt="LinkedIn Logo"
+          /></a>
         </div>
+      </div>
+      <div class="footerCopyrightBox">
+        <p>Copyright &#169; 2024</p>
+      </div>
     </footer>
-</body>
-
+  </body>
 </html>
