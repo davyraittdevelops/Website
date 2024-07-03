@@ -19,178 +19,121 @@
     <link href="https://fonts.googleapis.com/css2?family=Condiment&display=swap" rel="stylesheet">
 
     <style>
-      :root {
-    --dark-blue: #0400C4;
-    --light-blue: #807FBC;
-    --white: #FFF4ED;
-    --light-black: #333;
-    --orange: #FF825A;
-}
+        :root {
+            --dark-blue: #0400C4;
+            --light-blue: #807FBC;
+            --white: #FFF4ED;
+            --light-black: #333;
+            --orange: #FF825A;
+        }
 
-body {
-    font-family: "Acme", sans-serif;
-    margin: 0;
-    padding: 0;
-}
+        .mainBlog {
+            margin: 16px 5%;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            flex-direction: column;
+            width: 90%;
+        }
 
-.mainBlog {
-    margin: 16px;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    flex-direction: column;
-}
+        .blogHeading {
+            display: inline;
+            margin: 16px 16px 0 16px;
+            color: var(--dark-blue);
+            font-family: "Acme";
+            align-self: center;
+            font-size: 32px;
+        }
 
-.blogHeading {
-    display: inline;
-    margin: 16px 0;
-    color: var(--dark-blue);
-    font-family: "Acme";
-    align-self: center;
-    font-size: 32px;
-    text-align: center;
-}
+        .blogsHeadingLine {
+            content: " ";
+            height: 2px;
+            width: 100%;
+            background-color: var(--orange);
+        }
 
-.blogsHeadingLine {
-    content: " ";
-    height: 2px;
-    width: 100%;
-    background-color: var(--orange);
-    margin: 16px 0;
-}
+        .blogsDescription h4 {
+            color: var(--light-black);
+            font-family: "Acme";
+            font-size: 24px;
+        }
 
-.blogsDescription h4 {
-    color: var(--light-black);
-    font-family: "Acme";
-    font-size: 24px;
-    margin-top: 16px;
-}
+        .blogsDescription {
+            color: var(--light-black);
+            font-family: "Acme";
+            font-size: 20px;
+            width: 100%;
+        }
 
-.blogsDescription {
-    color: var(--light-black);
-    font-family: "Acme";
-    font-size: 18px;
-    line-height: 1.6;
-}
+        .blogsDescription a {
+            text-decoration: none;
+            color: var(--dark-blue);
+            transition: 0.5s;
+        }
 
-.blogsDescription a {
-    text-decoration: none;
-    color: var(--dark-blue);
-    transition: 0.5s;
-}
+        .blogsDescription a:hover {
+            color: var(--light-black);
+        }
 
-.blogsDescription a:hover {
-    color: var(--light-black);
-}
+        .code {
+            font-family: monospace;
+            color: white;
+            background-color: #333;
+            padding: 16px;
+            border-radius: 8px;
+            margin: 16px 0px;
+            max-width: 100%;
+            overflow-x: auto;
+            white-space: pre-wrap; /* Wrap code lines to fit the container */
+            word-wrap: break-word; /* Break long words to fit the container */
+            box-sizing: border-box;
+        }
 
-.code {
-    font-family: monospace;
-    color: white;
-    background-color: #333;
-    padding: 16px;
-    border-radius: 8px;
-    margin: 16px 0;
-    max-width: 90vw;
-    overflow: scroll;
-}
+        .thumbnail {
+            max-width: 80%;
+            align-self: center;
+            margin: 32px 8px;
+        }
 
-.thumbnail {
-    max-width: 80%;
-    align-self: center;
-    margin: 32px 8px;
-}
+        .banner-image {
+            width: 100%;
+            height: auto;
+            max-height: 500px;
+            overflow: hidden;
+            margin-bottom: 32px;
+        }
 
-.banner-image {
-    width: 100%;
-    height: auto;
-    max-height: 500px;
-    overflow: hidden;
-    margin-bottom: 32px;
-}
+        .banner-image img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
 
-.banner-image img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-}
+        /* Mobile Friendly Styles */
+        @media (max-width: 768px) {
+            .mainBlog {
+                margin: 16px 5%;
+                width: 90%;
+            }
 
-@media (max-width: 768px) {
-    .mainBlog {
-        margin: 10px;
-    }
+            .blogHeading {
+                font-size: 28px;
+                text-align: center;
+            }
 
-    .blogHeading {
-        font-size: 24px;
-    }
+            .blogsDescription {
+                font-size: 18px;
+            }
 
-    .blogsDescription h4 {
-        font-size: 20px;
-    }
+            .blogsDescription h4 {
+                font-size: 22px;
+            }
 
-    .blogsDescription {
-        font-size: 16px;
-    }
-
-    .code {
-        font-size: 12px;
-        padding: 8px;
-    }
-}
-
-.footer {
-    padding: 20px;
-    background-color: var(--dark-blue);
-    color: var(--white);
-    text-align: center;
-}
-
-.footerBox {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.footerLogo h1 a {
-    color: var(--white);
-    text-decoration: none;
-    font-size: 24px;
-}
-
-.footerMenu {
-    margin-top: 20px;
-}
-
-#footerMenu {
-    list-style-type: none;
-    padding: 0;
-}
-
-#footerMenu a {
-    color: var(--white);
-    text-decoration: none;
-    font-size: 16px;
-    margin: 0 10px;
-}
-
-.socialMedia {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-}
-
-.socialMedia div {
-    margin: 0 10px;
-}
-
-.socialMedia img {
-    width: 24px;
-    height: 24px;
-}
-
-.footerCopyrightBox {
-    margin-top: 20px;
-    font-size: 14px;
-}
+            .thumbnail {
+                max-width: 90%;
+                margin: 16px auto;
+            }
+        }
 
     </style>
 
@@ -233,7 +176,7 @@ body {
             <h4>Getting Started</h4>
             Before diving into the main loop, the script sets up essential configurations and initializes key components. Here’s how we read the configuration settings:
     
-            <pre style="background: #2e2e2e; color: #f8f8f2; padding: 10px; border-radius: 5px; overflow-x: auto; font-size: 14px;">
+            <pre class="code">
     <code lang="java">
     try {
         JSONObject botSettings = readConfig("botSettings.json");
@@ -248,7 +191,7 @@ body {
     
             This part reads the configuration from a JSON file to determine which rune to craft. Next, we initialize the DaxWalker for efficient pathfinding:
     
-            <pre style="background: #2e2e2e; color: #f8f8f2; padding: 10px; border-radius: 5px; overflow-x: auto; font-size: 14px;">
+            <pre class="code">
     <code lang="java">
     private void initializeDaxWalker() {
         try {
@@ -264,7 +207,7 @@ body {
             <h4>Main Loop and Initial Setup</h4>
             The main loop of the script is where the action happens. It starts by setting up the GUI and waiting for user input to proceed.
     
-            <pre style="background: #2e2e2e; color: #f8f8f2; padding: 10px; border-radius: 5px; overflow-x: auto; font-size: 14px;">
+            <pre class="code">
     <code lang="java">
     @Override
     public void execute(final String args) {
@@ -316,7 +259,7 @@ body {
             <h4>Crafting Air Runes</h4>
             Crafting air runes involves several steps, including walking to the Falador bank, withdrawing items, walking to the air altar, crafting runes, and returning to the bank. Here’s how the script manages this process:
     
-            <pre style="background: #2e2e2e; color: #f8f8f2; padding: 10px; border-radius: 5px; overflow-x: auto; font-size: 14px;">
+            <pre class="code">
     <code lang="java">
     private void craftAirRunes() {
         boolean successFullyWalkedToFallyBank = walkToFallyBank();
@@ -391,7 +334,7 @@ body {
             <h4>Buying from the Grand Exchange</h4>
             An essential part of the script is ensuring that it has all the necessary supplies. The `GrandExchangeHelper` class handles purchasing missing items from the Grand Exchange. Here’s a snippet showing how it places a buy offer and handles retries if the offer does not complete:
     
-            <pre style="background: #2e2e2e; color: #f8f8f2; padding: 10px; border-radius: 5px; overflow-x: auto; font-size: 14px;">
+            <pre class="code">
     <code lang="java">
     public static boolean buyItemFromGE(String itemName, int quantity, int initialPrice) {
         final int maxRetries = 3;
@@ -471,7 +414,7 @@ body {
             <h4>Interaction with Game Objects</h4>
             Interacting with various game objects, such as altars and portals, is an essential part of the runecrafting process. The script handles these interactions efficiently, ensuring smooth transitions between different actions.
     
-            <pre style="background: #2e2e2e; color: #f8f8f2; padding: 10px; border-radius: 5px; overflow-x: auto; font-size: 14px;">
+            <pre class="code">
     <code lang="java">
     public static boolean interactWithObject(String nameObject, String interactAction) {
         boolean success = false;
@@ -559,8 +502,6 @@ body {
         </div>
     </section>
     
-    
-
     <footer class="footer">
         <div class="footerBox">
             <div class="footerLogo">
