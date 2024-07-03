@@ -27,8 +27,14 @@
             --orange: #FF825A;
         }
 
+        body {
+            font-family: "Acme", sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
         .mainBlog {
-            margin: 100px 32px;
+            margin: 20px;
             display: flex;
             justify-content: center;
             align-items: flex-start;
@@ -36,12 +42,12 @@
         }
 
         .blogHeading {
-            display: inline;
-            margin: 16px 16px 0 16px;
+            margin: 16px 0;
             color: var(--dark-blue);
             align-self: center;
             font-family: "Acme";
             font-size: 32px;
+            text-align: center;
         }
 
         .blogsHeadingLine {
@@ -49,18 +55,21 @@
             height: 2px;
             width: 100%;
             background-color: var(--orange);
+            margin: 16px 0;
         }
 
         .blogsDescription h4 {
             color: var(--light-black);
             font-family: "Acme";
             font-size: 24px;
+            margin-top: 16px;
         }
 
         .blogsDescription {
             color: var(--light-black);
             font-family: "Acme";
-            font-size: 20px;
+            font-size: 18px;
+            line-height: 1.6;
         }
 
         .blogsDescription a {
@@ -76,7 +85,7 @@
         .thumbnail img {
             max-width: 80vw;
             align-self: center;
-            margin: 16px 8px;
+            margin: 16px 0;
         }
 
         .banner-image {
@@ -93,9 +102,41 @@
             object-fit: cover;
         }
 
-    </style>
+        pre {
+            background: #2e2e2e;
+            color: #f8f8f2;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
 
+        @media (max-width: 768px) {
+            .mainBlog {
+                margin: 10px;
+            }
+
+            .blogHeading {
+                font-size: 24px;
+            }
+
+            .blogsDescription h4 {
+                font-size: 20px;
+            }
+
+            .blogsDescription {
+                font-size: 16px;
+            }
+
+            pre {
+                font-size: 12px;
+                padding: 8px;
+            }
+        }
+    </style>
 </head>
+
 
 <body>
 
