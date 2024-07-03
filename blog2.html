@@ -19,90 +19,178 @@
     <link href="https://fonts.googleapis.com/css2?family=Condiment&display=swap" rel="stylesheet">
 
     <style>
-        :root {
-            --dark-blue: #0400C4;
-            --light-blue: #807FBC;
-            --white: #FFF4ED;
-            --light-black: #333;
-            --orange: #FF825A;
-        }
+      :root {
+    --dark-blue: #0400C4;
+    --light-blue: #807FBC;
+    --white: #FFF4ED;
+    --light-black: #333;
+    --orange: #FF825A;
+}
 
-        .mainBlog {
-            margin: 16px 32px;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            flex-direction: column;
-        }
+body {
+    font-family: "Acme", sans-serif;
+    margin: 0;
+    padding: 0;
+}
 
-        .blogHeading {
-            display: inline;
-            margin: 16px 16px 0 16px;
-            color: var(--dark-blue);
-            font-family: "Acme";
-            align-self: center;
-            font-size: 32px;
-        }
+.mainBlog {
+    margin: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+}
 
-        .blogsHeadingLine {
-            content: " ";
-            height: 2px;
-            width: 100%;
-            background-color: var(--orange);
-        }
+.blogHeading {
+    display: inline;
+    margin: 16px 0;
+    color: var(--dark-blue);
+    font-family: "Acme";
+    align-self: center;
+    font-size: 32px;
+    text-align: center;
+}
 
-        .blogsDescription h4 {
-            color: var(--light-black);
-            font-family: "Acme";
-            font-size: 24px;
-        }
+.blogsHeadingLine {
+    content: " ";
+    height: 2px;
+    width: 100%;
+    background-color: var(--orange);
+    margin: 16px 0;
+}
 
-        .blogsDescription {
-            color: var(--light-black);
-            font-family: "Acme";
-            font-size: 20px;
-        }
+.blogsDescription h4 {
+    color: var(--light-black);
+    font-family: "Acme";
+    font-size: 24px;
+    margin-top: 16px;
+}
 
-        .blogsDescription a {
-            text-decoration: none;
-            color: var(--dark-blue);
-            transition: 0.5s;
-        }
+.blogsDescription {
+    color: var(--light-black);
+    font-family: "Acme";
+    font-size: 18px;
+    line-height: 1.6;
+}
 
-        .blogsDescription a:hover {
-            color: var(--light-black);
-        }
+.blogsDescription a {
+    text-decoration: none;
+    color: var(--dark-blue);
+    transition: 0.5s;
+}
 
-        .code {
-            font-family: monospace;
-            color: white;
-            background-color: #333;
-            padding: 16px;
-            border-radius: 8px;
-            margin: 16px 0px;
-            max-width: 90vw;
-            overflow: scroll;
-        }
+.blogsDescription a:hover {
+    color: var(--light-black);
+}
 
-        .thumbnail {
-            max-width: 80%;
-            align-self: center;
-            margin: 32px 8px;
-        }
+.code {
+    font-family: monospace;
+    color: white;
+    background-color: #333;
+    padding: 16px;
+    border-radius: 8px;
+    margin: 16px 0;
+    max-width: 90vw;
+    overflow: scroll;
+}
 
-        .banner-image {
-            width: 100%;
-            height: auto;
-            max-height: 500px;
-            overflow: hidden;
-            margin-bottom: 32px;
-        }
+.thumbnail {
+    max-width: 80%;
+    align-self: center;
+    margin: 32px 8px;
+}
 
-        .banner-image img {
-            width: 100%;
-            height: auto;
-            object-fit: cover;
-        }
+.banner-image {
+    width: 100%;
+    height: auto;
+    max-height: 500px;
+    overflow: hidden;
+    margin-bottom: 32px;
+}
+
+.banner-image img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+@media (max-width: 768px) {
+    .mainBlog {
+        margin: 10px;
+    }
+
+    .blogHeading {
+        font-size: 24px;
+    }
+
+    .blogsDescription h4 {
+        font-size: 20px;
+    }
+
+    .blogsDescription {
+        font-size: 16px;
+    }
+
+    .code {
+        font-size: 12px;
+        padding: 8px;
+    }
+}
+
+.footer {
+    padding: 20px;
+    background-color: var(--dark-blue);
+    color: var(--white);
+    text-align: center;
+}
+
+.footerBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.footerLogo h1 a {
+    color: var(--white);
+    text-decoration: none;
+    font-size: 24px;
+}
+
+.footerMenu {
+    margin-top: 20px;
+}
+
+#footerMenu {
+    list-style-type: none;
+    padding: 0;
+}
+
+#footerMenu a {
+    color: var(--white);
+    text-decoration: none;
+    font-size: 16px;
+    margin: 0 10px;
+}
+
+.socialMedia {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.socialMedia div {
+    margin: 0 10px;
+}
+
+.socialMedia img {
+    width: 24px;
+    height: 24px;
+}
+
+.footerCopyrightBox {
+    margin-top: 20px;
+    font-size: 14px;
+}
 
     </style>
 
