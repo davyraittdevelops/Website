@@ -4,9 +4,9 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="How I Try (and Sometimes Fail) to Stay on Track with My Fitness Goals: Building a Garmin Data Tracker" />
+    <meta name="description" content="How I Try to Stay on Track with My Fitness Goals: Building a Garmin Data Tracker" />
     <meta name="author" content="Davy Raitt" />
-    <title>How I Try (and Sometimes Fail) to Stay on Track with My Fitness Goals: Building a Garmin Data Tracker</title>
+    <title>How I Try to Stay on Track with My Fitness Goals: Building a Garmin Data Tracker</title>
     <link rel="icon" type="image/x-icon" href="../assets/img/favicon.ico" />
     <link href="../css/styles.css" rel="stylesheet" />
     <style>
@@ -26,13 +26,13 @@
 
         .banner-image {
         width: 100%;
-        max-width: 300px; /* Adjust this value based on your preference */
+        max-width: 300px;
         height: auto;
         margin: 0 auto 32px;
         display: block;
         overflow: hidden;
-        border-radius: 20px; /* Adds rounded corners */
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Adds a subtle shadow */
+        border-radius: 20px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
 
         .banner-image img {
@@ -44,7 +44,7 @@
 
         @media (max-width: 768px) {
             .banner-image {
-                max-width: 80%; /* Makes image responsive on smaller screens */
+                max-width: 80%;
             }
         }
     </style>
@@ -56,22 +56,20 @@
     </nav>
     <div class="container-fluid p-4">
         <div class="resume-section-content">
-            <h2>How I Try (and Sometimes Fail) to Stay on Track with My Fitness Goals: Building a Garmin Data Tracker</h2>
+            <h2>How I Try to Stay on Track with My Fitness Goals: Building a Garmin Data Tracker</h2>
             <p class="blog-post-meta">October 20, 2024 by Davy Raitt</p>
 
             <div class="banner-image">
                 <img src="../assets/img/blog3_thumbnail.jpeg" alt="Fitness Tracker Banner" />
             </div>
 
-            <h4>The Challenge: When Your Fitness App is as Motivating as a Sloth</h4>
-            <p>As a software developer with a passion for fitness (and a slight addiction to gadgets), I've always been fascinated by the intersection of technology and personal health. Like many people, I struggle with consistency in my fitness routine. Some days I'm pumped to run a marathon, other days I consider reaching for the TV remote as my cardio.</p>
+            <h4>The Challenge: When Your Fitness App Needs a Boost</h4>
+            <p>As a software developer with a passion for fitness, I've always been fascinated by the intersection of technology and personal health. Like many people, I struggle with consistency in my fitness routine. I have a Garmin watch that tracks my activities, but I found the standard app lacking in motivation and goal-setting features. I needed something more engaging and personalized.</p>
 
-            <p>I have a Garmin watch that tracks my activities, but let's be honest, the Garmin app is about as exciting as watching paint dry. I needed something more engaging, something that would make me want to move more than just my thumbs while scrolling through Netflix.</p>
+            <h4>The Solution: A Custom Garmin Data Tracker</h4>
+            <p>To address this, I decided to create my own fitness tracking app. Here's how I approached it:</p>
 
-            <h4>The Solution: A Custom Garmin Data Tracker (Because I'm a Nerd Who Loves to Gamify Everything)</h4>
-            <p>To bring this idea to life, I decided to create my own fitness tracking app. Because why use something off the shelf when you can spend countless hours building your own, right? Here's how I did it:</p>
-
-            <h5>Backend (AWS Lambda) - Where the Magic (and Occasional Cursing) Happens</h5>
+            <h5>Backend (AWS Lambda) - The Data Processing Engine</h5>
             <p>I created a Python Lambda function that connects to the Garmin API using the garth library. Here's a snippet of how it fetches and processes activities:</p>
 
             <pre><code lang="python">
@@ -94,9 +92,9 @@ def fetch_and_process_activities(start_date, end_date):
     return total_km
             </code></pre>
 
-            <p>This function fetches activities for a given date range and calculates the total distance for walking, running, and hiking activities. It's like a personal accountant for your sweat equity!</p>
+            <p>This function fetches activities for a given date range and calculates the total distance for walking, running, and hiking activities.</p>
 
-            <h5>Frontend (Flutter) - Where the Magic Becomes Visible (Most of the Time)</h5>
+            <h5>Frontend (Flutter) - Visualizing Progress</h5>
             <p>I built a Flutter app that communicates with my AWS backend to display my Garmin data. One of the key features is a chart showing my monthly activity. Here's a snippet of how I created this chart:</p>
 
             <pre><code lang="dart">
@@ -160,39 +158,46 @@ class KilometersChart extends StatelessWidget {
 }
             </code></pre>
 
-            <p>This chart shows my monthly kilometers, making it painfully clear which months I've been more couch potato than road warrior.</p>
+            <p>This chart provides a clear visual representation of my monthly kilometers, helping me track my progress over time.</p>
 
-            <h4>The Impact: It Worked! ...Kind Of</h4>
-            <p>Since implementing this system, I've noticed several changes:</p>
+            <h4>Key Features</h4>
             <ol>
-                <li><strong>Increased Awareness:</strong> I'm now acutely aware of how little I move some days. Thanks, app!</li>
-                <li><strong>Goal-Oriented Mindset:</strong> The yearly and weekly goals give me clear targets to work towards, or in some cases, clear targets to feel guilty about not reaching.</li>
-                <li><strong>Motivation Boost:</strong> Seeing my progress visually represented is incredibly motivating, especially on days when I'm tempted to skip a workout. It's like having a digital fitness coach that silently judges you.</li>
-                <li><strong>Data-Driven Decisions:</strong> I can now make more informed decisions about my training. For example, I've learned that I'm really good at coming up with excuses not to run when it's raining.</li>
+                <li><strong>Yearly Goal Tracking:</strong> I set an ambitious goal of 1000km per year, which includes hiking, walking, treadmill, and running activities. The app helps me visualize my progress towards this annual target.</li>
+                <li><strong>Weekly Streak System:</strong> To keep myself consistently active, I implemented a streak system. Each week, I aim to reach a distance goal. If I succeed, the goal increases by 10% for the next week. If I miss the target, it resets to my original 15km goal. This gamification adds an extra layer of motivation to my routine.</li>
+                <li><strong>Monthly Activity Visualization:</strong> The bar chart gives me a quick overview of my monthly performance, making it easy to spot trends and areas for improvement.</li>
             </ol>
 
-            <h4>Technical Challenges and Learnings (or, "Why Did I Think This Was a Good Idea?")</h4>
+            <h4>The Impact: Progress in Motion</h4>
+            <p>Since implementing this system, I've noticed several positive changes:</p>
+            <ol>
+                <li><strong>Increased Awareness:</strong> I'm now more conscious of my activity levels on a daily and weekly basis.</li>
+                <li><strong>Goal-Oriented Mindset:</strong> The yearly and weekly goals give me clear targets to work towards, helping me stay focused on my fitness journey.</li>
+                <li><strong>Motivation Boost:</strong> Seeing my progress visually represented is incredibly motivating, especially on days when I'm tempted to skip a workout.</li>
+                <li><strong>Data-Driven Decisions:</strong> I can now make more informed decisions about my training based on trends in my data.</li>
+            </ol>
+
+            <h4>Technical Challenges and Learnings</h4>
             <p>Building this project wasn't without its challenges. Some key learnings include:</p>
             <ol>
-                <li><strong>API Acrobatics:</strong> Garmin wouldn't give me API access, so I had to use the garth library. It felt like I was playing data fetch with a stubborn dog.</li>
-                <li><strong>Activity Type Confusion:</strong> Turns out, Garmin has more activity types than I have excuses for not working out. Categorizing these was... fun.</li>
-                <li><strong>Time is Relative:</strong> Calculating yearly and monthly totals was trickier than expected. Einstein was right - time is relative, especially when you're trying to code time-based calculations.</li>
-                <li><strong>API Limits are Real:</strong> I couldn't fetch a full year of data at once, so I had to "paginate" my requests. It was like trying to fill a swimming pool with a teaspoon.</li>
+                <li><strong>API Integration:</strong> Garmin doesn't provide public API access, so I had to use the garth library as a workaround. This required some creative problem-solving.</li>
+                <li><strong>Activity Type Categorization:</strong> Garmin offers a wide variety of activity types. Deciding which ones to include in my distance calculations and how to categorize them took some consideration.</li>
+                <li><strong>Time-Based Calculations:</strong> Calculating yearly and monthly totals was more complex than initially expected, especially when dealing with different time zones and date boundaries.</li>
+                <li><strong>Data Fetching Limitations:</strong> Due to API constraints, I couldn't fetch a full year of data at once. I had to implement a pagination system to retrieve data in smaller chunks.</li>
             </ol>
 
-            <h4>Future Enhancements (or "Feature Creep")</h4>
-            <p>While the current version of my Garmin data tracker is functional (most of the time), I have several ideas for future improvements:</p>
+            <h4>Future Enhancements</h4>
+            <p>While the current version of my Garmin data tracker is functional, I have several ideas for future improvements:</p>
             <ol>
-                <li>Implement machine learning to predict future performance based on past data. (Spoiler: It will probably just tell me to get off the couch more often)</li>
-                <li>Add social features to compare progress with friends. (Because nothing motivates like a little friendly competition and public shaming)</li>
+                <li>Implement machine learning to predict future performance based on past data.</li>
+                <li>Add social features to compare progress with friends, adding a friendly competitive element.</li>
             </ol>
 
-            <h4>Conclusion: Was It Worth It?</h4>
-            <p>Building this Garmin data tracker has been an exciting journey that combines my love for coding with my passion for fitness. It's a testament to how personal projects can not only improve our technical skills but also positively impact our daily lives. Or at least, give us something to blame when we don't meet our fitness goals.</p>
-            <p>Has it made me a fitness god? Not quite. But it has helped me move more, and sometimes, that's all we can ask for. Plus, now I have a really cool app to show off at parties and at work.</p>
-            <p>Remember, the key to achieving fitness goals often lies in consistency, awareness, and having a sense of humor about the whole process. Whether you build your own tracker or use existing tools, find a way to keep your goals visible and measure your progress. And if all else fails, remember: running away from your problems counts as cardio.</p>
+            <h4>Conclusion: A Step in the Right Direction</h4>
+            <p>Building this Garmin data tracker has been an exciting journey that combines my love for coding with my passion for fitness. It's a testament to how personal projects can not only improve our technical skills but also positively impact our daily lives.</p>
+            <p>While it hasn't transformed me into a fitness guru overnight, it has certainly helped me move more consistently. The app provides the extra motivation I need to lace up my running shoes, even on days when the couch looks particularly inviting.</p>
+            <p>Remember, the key to achieving fitness goals often lies in consistency, awareness, and finding what works for you. Whether you build your own tracker or use existing tools, find a way to keep your goals visible and measure your progress. After all, every step counts!</p>
             <p>The project can be found here: https://github.com/davyraittdevelops/fitness_goal_app</p>
-            <p><em>Note: This project is for personal use and educational purposes. Always ensure you comply with the terms of service of any APIs you're using, and never share your personal credentials in your code. Also, please don't sue me, Garmin. I promise I'm not trying to steal your users, just motivate myself!</em></p>
+            <p><em>Note: This project is for personal use and educational purposes. Always ensure you comply with the terms of service of any APIs you're using, and never share your personal credentials in your code.</em></p>
         </div>
     </div>
     <!-- Bootstrap core JS-->
