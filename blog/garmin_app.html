@@ -25,17 +25,27 @@
         }
 
         .banner-image {
-            width: 75%;
-            height: auto;
-            max-height: 400px;
-            overflow: hidden;
-            margin-bottom: 32px;
+        width: 100%;
+        max-width: 300px; /* Adjust this value based on your preference */
+        height: auto;
+        margin: 0 auto 32px;
+        display: block;
+        overflow: hidden;
+        border-radius: 20px; /* Adds rounded corners */
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Adds a subtle shadow */
         }
 
         .banner-image img {
             width: 100%;
             height: auto;
             object-fit: cover;
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .banner-image {
+                max-width: 80%; /* Makes image responsive on smaller screens */
+            }
         }
     </style>
 </head>
