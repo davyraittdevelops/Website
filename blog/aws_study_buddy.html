@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Building an AWS Study Buddy App in Flutter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+
+        h1,
+        h2 {
+            color: #2c3e50;
+        }
+
+        .blog-metadata {
+            color: #7f8c8d;
+            font-size: 0.9em;
+            margin-bottom: 30px;
+        }
+
+        pre code {
+            background: #1a1a1a;
+            color: #ffffff;
+            padding: 16px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 14px;
+            display: block;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            width: 100%;
+            box-sizing: border-box;
+            margin: 20px 0;
+            line-height: 1.5;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+        }
+
+        p {
+            color: #2c3e50;
+            margin-bottom: 16px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Building an AWS Study Buddy App in Flutter</h1>
+    <p class="blog-metadata">By Davy Raitt, November 2024</p>
+
+    <p>
+        I needed a quick way to review multiple-choice questions for AWS certifications without fussing
+        with spreadsheets or random websites. So I built a Flutter quiz app—complete with local data
+        storage, real-time score updates, and an “Endless Mode” challenge. Here’s how it came together,
+        along with some of the issues I faced while building it.
+    </p>
+
+    <hr>
+
+    <h2>1. Why This App?</h2>
+    <p>
+        I wanted something that would:
+    </p>
+    <ul>
+        <li>Load new or updated questions quickly from a simple JSON file.</li>
+        <li>Keep track of how many questions I’ve answered (and how many are correct!), motivating me
+            to keep going.</li>
+        <li>Let me study on the go without requiring a constant network connection.</li>
+    </ul>
+    <p>
+        Originally, I tried making a simple command-line script, but quickly realized
+        a mobile-friendly interface would be far more enjoyable for daily use.
+    </p>
+
+    <hr>
+
+    <h2>2. Data Handling & Local Storage</h2>
+    <p>
+        One key feature is using <code>SharedPreferences</code> for high scores and total questions answered.
+        A short snippet:
+    </p>
+
+    <pre><code>
+// Data snippet (under 10 lines)
+Future<void> loadHighScore() async {
+  final prefs = await SharedPreferences.getInstance();
+  setState(() {
+    highScore = prefs.getInt('highScore') ?? 0;
+  });
+  print("Loaded highScore: $highScore");
+}
+</code></pre>
+
+    <p>
+        <strong>Explanation:</strong> This function reads the saved high score from the device.
+        It’s simple but crucial for motivation—I can see my personal best even if I exit the app.
+    </p>
+
+    <hr>
+
+    <h2>3. The Quiz Logic</h2>
+    <p>
+        My quiz logic reads JSON questions, shuffles them, and then tallies a score.
+        Here’s a small peek at the function that checks if you got an answer correct:
+    </p>
+
+    <pre><code>
+// Checking correctness (under 10 lines)
+bool isAnswerCorrect(List<String> correct, List<String> chosen) {
+  final correctSet = Set<String>.from(correct);
+  final chosenSet  = Set<String>.from(chosen);
+  return correctSet.containsAll(chosenSet)
+         && chosenSet.containsAll(correctSet);
+}
+</code></pre>
+
+    <p>
+        <strong>Explanation:</strong> We convert answers to sets and compare them,
+        so multi-answer questions can be handled easily (e.g., “A and C”).
+    </p>
+
+    <hr>
+
+    <h2>4. Explanation Popups</h2>
+    <p>
+        Each time I submit an answer, I show an explanation dialog. If I missed the question,
+        this helps me learn faster.
+    </p>
+
+    <pre><code>
+// Simple dialog snippet (under 10 lines)
+showDialog(
+  context: context,
+  builder: (_) => AlertDialog(
+    title: const Text("Explanation"),
+    content: Text(currentQuestion.explanation),
+    actions: [
+      TextButton(
+        onPressed: () => Navigator.pop(context),
+        child: const Text("OK"),
+      )
+    ],
+  )
+);
+</code></pre>
+
+    <p>
+        <strong>Explanation:</strong> The snippet uses <code>showDialog</code> to
+        pop up a small explanation, then closes on “OK.”
+        This is how I reinforce knowledge on each step.
+    </p>
+
+    <hr>
+
+    <h2>5. “Endless Mode” Twist</h2>
+    <p>
+        Sometimes I want a quick session. Other times, I want to keep going
+        until I’m totally done or get a question wrong. Here’s the snippet
+        that triggers “endless” behavior if you enable it:
+    </p>
+
+    <pre><code>
+// Endless mode (under 10 lines)
+if (!isCorrect && widget.endlessMode) {
+  // If you get it wrong once, the quiz ends
+  showExplanationAndEndQuiz();
+  return;
+}
+</code></pre>
+
+    <p>
+        <strong>Explanation:</strong> If you choose <em>Endless Mode</em>, messing up any question
+        ends the quiz. It’s an extra challenge for me when I’m feeling confident and
+        want a “sudden death” approach to studying.
+    </p>
+
+    <hr>
+
+    <h2>Challenges & Lessons Learned</h2>
+    <p>
+        One big challenge was making sure the UI stayed smooth when switching
+        between different question sets. I had to shuffle questions properly
+        without repeating them, and also prevent data corruption if a user
+        closed the app mid-quiz.
+    </p>
+    <p>
+        Another lesson learned was balancing the right amount of detail in
+        each question’s explanation. Too short, and I didn’t learn enough.
+        Too long, and I’d gloss over it. Striking that balance was key.
+    </p>
+
+    <hr>
+
+    <h2>Wrap-Up</h2>
+    <p>
+        This app turned out to be a great companion for my AWS cert prep.
+        With offline-ready quizzes, trackable high scores, and the variety
+        of short or endless modes, it kept me engaged and let me see
+        my progress clearly. Hopefully, it inspires you to build (and
+        personalize) your own quiz-based study buddy!
+
+        By now I have passed 4 certifications with it!
+    </p>
+
+</body>
+
+</html>

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Reduce Costs and Latency with Amazon Bedrock Intelligent Prompt Routing and Prompt Caching (Preview)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+
+        pre code {
+            background: #1a1a1a;
+            color: #ffffff;
+            padding: 16px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 14px;
+            display: block;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            width: 100%;
+            box-sizing: border-box;
+            margin: 20px 0;
+            line-height: 1.5;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            color: #2c3e50;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .blog-metadata {
+            color: #7f8c8d;
+            font-size: 0.9em;
+            margin-bottom: 30px;
+        }
+
+        .highlight {
+            background: #f8fafc;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        ul {
+            margin: 20px 0;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        p {
+            color: #2c3e50;
+            margin-bottom: 16px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Reduce Costs and Latency with Amazon Bedrock Intelligent Prompt Routing and Prompt Caching (Preview)</h1>
+    <p class="blog-metadata">By Davy Raitt, November 2024</p>
+
+    <p>Are you excited about Generative AI and Large Language Models (LLMs, for short)? If yes, you're about to discover
+        something gamechanging: <strong>Intelligent Prompt Routing</strong> and <strong>Prompt Caching</strong> with
+        Amazon Bedrock.
+        These features can help you cut down your inference costs, speed up responses, and still keep the quality of
+        answers top-notch.</p>
+
+    <div class="highlight">
+        <p><strong>Quick Context:</strong> Amazon Bedrock now lets you use smaller, cheaper foundation models for
+            simpler requests and
+            only uses more powerful models when needed. Plus, you can cache often-used prompt details so you don’t have
+            to pay
+            for them over and over.</p>
+    </div>
+
+    <h2>1. Intelligent Prompt Routing in Simple Words</h2>
+    <p>Imagine you have two AI models: Model A (bigger, pricier, super capable) and Model B (smaller, cheaper, faster).
+        If your user’s question is straightforward, you want to use Model B to save money and get a quick response.
+        But if the user asks a tricky question, you want Model A for a detailed answer. Amazon Bedrock’s
+        <em>Intelligent Prompt Routing</em> does this automatically. It checks how complex each request is and routes it
+        to
+        the best model.
+    </p>
+    <p>It’s like having two gears in your AI engine: one for short or basic queries, and another for advanced or bigger
+        tasks. No more guesswork on which model to pick each time. You can cut costs by up to 30% without hurting
+        performance.</p>
+
+    <h3>1.1 A Quick CLI Example</h3>
+    <p>Here’s a simple AWS CLI snippet showing how you might call a “Prompt Router” instead of a single foundation
+        model.
+        We’re calling a made-up ARN (Amazon Resource Name) for the router:</p>
+
+    <pre><code>
+aws bedrock-runtime converse \
+    --model-id arn:aws:bedrock:us-east-1:111122223333:default-prompt-router/smart-router-demo:1 \
+    --messages '[
+        { "role": "user", "content": [
+            { "text": "How do I sum two numbers in Python?" }
+        ]}
+    ]'
+</code></pre>
+
+    <p>In this request, the router automatically decides if your prompt is “easy” or “hard” and picks the right model.
+        You don’t have to do anything special—just ask your question!</p>
+
+    <h2>2. Prompt Caching 101</h2>
+    <p>Prompt caching is the other superpower. Sometimes we ask the AI similar questions over and over, or we give it
+        the
+        same <em>context</em> repeatedly. With caching, you can store those repetitive parts and reuse them, which can
+        reduce costs
+        (sometimes by up to 90%) and speed up response time (by up to 85%).</p>
+    <p>For instance, if your conversation always starts with a large chunk of text (like a long product spec), normally
+        the model
+        has to process it each time, racking up token fees. Prompt caching remembers that text for a short time (like 5
+        minutes).
+        If you don’t change it, it doesn’t bill you all over again. Gamechanger, right?</p>
+
+    <h3>2.1 A Simple Python Example</h3>
+    <p>Let’s say you have a list of topics you keep referencing while chatting with your AI. You want to cache them so
+        you’re not
+        paying the full price each time. Here’s a very short Python snippet to show how it might look in practice.
+        (Note: This
+        is a <em>hypothetical</em> example to illustrate how caching could be used.)</p>
+
+    <pre><code lang="python">
+import boto3
+
+def chat_with_bedrock(message: str, enable_caching: bool = False):
+    client = boto3.client("bedrock-runtime", region_name="us-east-1")
+
+    prompt_content = [
+        {"text": "Here is some context about my app..."},
+    ]
+    
+    if enable_caching:
+        # We mark this as a checkpoint to be cached
+        prompt_content.append({"cachePoint": {"type": "default"}})
+
+    # Add the actual user message at the end
+    prompt_content.append({"text": message})
+
+    response = client.converse(
+        modelId="arn:aws:bedrock:us-east-1:111122223333:foundation-model/prompt-caching-demo",
+        messages=[
+            {"role": "user", "content": prompt_content}
+        ]
+    )
+
+    return response.get("output", {}).get("message", {}).get("content", [])
+
+# Example usage
+if __name__ == "__main__":
+    # First time, we enable caching so that repeated context can be stored.
+    response1 = chat_with_bedrock("What is the best way to scale this app?", enable_caching=True)
+    print("Response #1:", response1)
+
+    # Next time, hopefully caching helps reduce repeated cost.
+    response2 = chat_with_bedrock("Okay, now how do I monitor my app once it scales?", enable_caching=False)
+    print("Response #2:", response2)
+</code></pre>
+
+    <p>In this example, we add a “cache checkpoint” to store context about our app. The first request might use more
+        tokens (and cost)
+        because it’s storing new content in the cache. The second request then sees that context has already been
+        cached,
+        so it doesn’t fully reprocess it. The result? Lower cost and faster answers, especially when you keep reusing
+        large blocks of text.</p>
+
+    <h2>3. Why This Matters</h2>
+    <p>By combining Intelligent Prompt Routing with Prompt Caching, you get a one-two punch of cost efficiency and
+        speed.
+        You can route simple questions to cheaper models, let the big guns handle tricky ones, and cache all that
+        repeated content for later. That’s how you build AI-driven solutions that scale without breaking the bank.</p>
+
+    <h2>4. Things to Know</h2>
+    <ul>
+        <li><strong>Preview Mode:</strong> Both Intelligent Prompt Routing and Prompt Caching are in preview, so you
+            might
+            need special access to try them out.</li>
+        <li><strong>Region Availability:</strong> Right now, these features might only be available in a limited set of
+            AWS Regions,
+            so check your console or docs for specifics.</li>
+        <li><strong>Language Constraints:</strong> The router might be mostly tuned for English prompts, so watch out if
+            you’re
+            sending it other languages.</li>
+        <li><strong>Cache Expiration:</strong> Cached content generally sticks around for a few minutes. If you don't
+            use it within
+            that time, you’ll need to add it again.</li>
+        <li><strong>Billing Details:</strong> Cache reads (and often writes) are significantly cheaper than full model
+            inference, but
+            always check the latest Amazon Bedrock pricing page to see exactly how it’s billed.</li>
+    </ul>
+
+    <h2>5. Final Thoughts</h2>
+    <p>This is all about giving you <strong>more control</strong> over your AI usage. It’s kind of like using “fast
+        lanes”
+        for easy tasks and “super lanes” for complex ones, plus a memory system to avoid paying twice for the same
+        stuff.
+        We think it’s going to be a big deal for anyone building AI apps on AWS.</p>
+
+    <p>Thanks for reading! If you’re curious to try these features, reach out to AWS for preview access or keep an eye
+        on new
+        announcements. We hope this short blog sparks some ideas on how to make your Generative AI apps both smart and
+        cost-friendly.
+        Go forth and build!</p>
+
+</body>
+
+</html>
