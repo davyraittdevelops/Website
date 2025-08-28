@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="Building a Serverless Code Review Assistant with AWS Bedrock and GitLab" />
+    <meta name="author" content="Tech Blog" />
+    <title>Building a Serverless Code Review Assistant</title>
+    <link rel="icon" type="image/x-icon" href="../assets/img/favicon.ico" />
+    <link href="../css/styles.css" rel="stylesheet" />
+    <style>
+        pre code {
+            background: #1a1a1a;
+            color: #ffffff;
+            padding: 16px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 14px;
+            display: block;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            width: 100%;
+            box-sizing: border-box;
+            margin: 20px 0;
+            line-height: 1.5;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+        }
+
+        .setup-image {
+            width: 100%;
+            max-width: 800px;
+            margin: 30px auto;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+            display: block;
+        }
+
+        .image-caption {
+            text-align: center;
+            color: #666;
+            margin: 10px 0 30px;
+            font-style: italic;
+            font-size: 0.9em;
+        }
+
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 24px;
+        }
+
+        h4 {
+            color: #34495e;
+            margin: 40px 0 20px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #eee;
+        }
+
+        h5 {
+            color: #34495e;
+            margin: 30px 0 15px;
+        }
+
+        p {
+            line-height: 1.6;
+            margin-bottom: 16px;
+            color: #2c3e50;
+        }
+
+        .blog-post-meta {
+            color: #7f8c8d;
+            font-size: 0.9em;
+            margin-bottom: 30px;
+        }
+
+        .feature-list {
+            margin: 20px 0;
+            padding-left: 20px;
+        }
+
+        .feature-list li {
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+
+        .highlight-box {
+            background: #f8fafc;
+            border-left: 4px solid #3498db;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
+        <a class="navbar-brand js-scroll-trigger" href="../#page-top">Back to Blog</a>
+    </nav>
+    <div class="container-fluid p-4">
+        <div class="resume-section-content">
+            <h2>Building a Serverless Code Review Assistant with AWS Bedrock and GitLab</h2>
+            <p class="blog-post-meta">December 2024</p>
+
+            <div class="highlight-box">
+                <p><strong>TL;DR:</strong> We built a serverless code review assistant that integrates AWS Bedrock with
+                    GitLab, automating code reviews while maintaining detailed metrics. The system evolved from a simple
+                    pipeline-based approach to a robust serverless architecture, significantly improving our development
+                    workflow.</p>
+            </div>
+
+            <h4>The Challenge</h4>
+            <p>Our team faced recurring challenges with code review oversights leading to production issues. Despite
+                having multiple approvals, templates, and conditions in place, we needed a more robust automated
+                solution. The key requirements were:</p>
+            <ul class="feature-list">
+                <li>Automated code analysis across multiple repositories</li>
+                <li>Consistent review quality regardless of team or project</li>
+                <li>Cost-effective implementation with clear usage tracking</li>
+                <li>Minimal impact on developer workflow</li>
+                <li>Scalable architecture for growing teams</li>
+            </ul>
+
+            <h4>System Evolution</h4>
+
+            <h5>Initial Implementation</h5>
+            <p>Our first approach used GitLab CI pipelines directly:</p>
+            <img src="../assets/mergemateblogimages/old_setup.png" alt="Initial Pipeline Setup" class="setup-image" />
+            <p class="image-caption">Initial pipeline-based implementation with direct integrations</p>
+
+            <p>This setup quickly revealed several limitations:</p>
+            <ul class="feature-list">
+                <li>Managing scripts across 300+ repositories became a maintenance nightmare</li>
+                <li>Pipeline failures would block developers unnecessarily</li>
+                <li>No centralized monitoring or cost tracking</li>
+                <li>Updates required changes across multiple repositories</li>
+            </ul>
+
+            <h5>Enhanced Architecture</h5>
+            <p>Learning from these challenges, we redesigned the system with a serverless approach.
+                This is a CDK stack that builds a GitLab webhook receiver with API Gateway and Route53 custom domain
+                setup. The main
+                logic runs through Step Functions which coordinates three Lambda functions for different tasks: merge
+                request reviews,
+                emoji processing, and comment handling. The data is stored in DynamoDB tables with TTL capabilities and
+                stream
+                processing for automated cleanups. It uses AWS best practices like API key authentication, CloudWatch
+                monitoring, and
+                proper secret management through Secrets Manager. The stack is nicely organized into separate constructs
+                making it
+                modular and maintainable.
+            </p>
+            <img src="../assets/mergemateblogimages/new_setup.jpg" alt="New Architecture Setup" class="setup-image" />
+            <p class="image-caption">Enhanced serverless architecture with centralized management</p>
+
+            <h4>Core Components</h4>
+
+            <h5>1. AWS Integration Layer</h5>
+            <p>At the heart of our system is a robust AWS helper class managing all cloud service interactions:</p>
+
+            <pre><code lang="python">
+class AwsHelper:
+    def __init__(self, dynamodb_table_name=None):
+        self.region_name = os.environ["AWS_REGION"]
+        self.logger = logging.getLogger()
+        self.logger.setLevel(logging.INFO)
+        if dynamodb_table_name:
+            dynamodb = self.get_dynamodb_client()
+            self.table = dynamodb.Table(dynamodb_table_name)
+
+    def get_bedrock_client(self):
+        return boto3.client(service_name="bedrock", region_name=self.region_name)
+
+    def get_bedrock_runtime_client(self):
+        return boto3.client(
+            service_name="bedrock-runtime", region_name=self.region_name
+        )
+</code></pre>
+
+            <h5>2. Intelligent Review System</h5>
+            <p>The MrReviewer class handles the core review logic with adaptive depth based on change size:</p>
+
+            <pre><code lang="python">
+def generate_review_prompt(self, changes):
+    total_changed_lines = sum(
+        len([line for line in change.get("diff", "").split("\n")
+             if line.startswith("+") or line.startswith("-")])
+        for change in changes
+    )
+
+    if total_changed_lines <= 5:
+        base_instruction = """Please provide a very brief review of the following small code change.
+        Your review should be no more than 2-3 sentences long."""
+    elif total_changed_lines <= 20:
+        base_instruction = """Please provide a concise review of the following code changes.
+        Your review should be about 4-5 sentences long."""
+</code></pre>
+
+            <h5>3. Cost Management</h5>
+            <p>Precise cost tracking helps teams monitor and optimize their usage:</p>
+
+            <pre><code lang="python">
+def calculate_review_price(self, input_tokens, output_tokens):
+    input_price_per_1k = Decimal("0.003")
+    output_price_per_1k = Decimal("0.015")
+    input_cost = (Decimal(input_tokens) / 1000) * input_price_per_1k
+    output_cost = (Decimal(output_tokens) / 1000) * output_price_per_1k
+    return input_cost, output_cost, input_cost + output_cost
+</code></pre>
+
+            <h5>4. GitLab Integration</h5>
+            <p>A Lambda function handles merge request events and integrates with our change management process:</p>
+
+            <pre><code lang="python">
+def handler(event, context):
+    logger.info("Lambda function invoked")
+    try:
+        body = event
+        merge_request_id = body["merge_request"]["iid"]
+        project_id = body["project"]["id"]
+        discussion_id = body["object_attributes"]["discussion_id"]
+
+        reply = """
+**Did you know that If this MR makes any production change,
+the company requires you to create a Change Request?** \n
+This is a formal process to modify a product, system,
+document or deliverable in a project."""
+
+        response = GitlabHelper().reply_merge_mate_note(
+            project_id, merge_request_id, discussion_id, reply
+        )
+</code></pre>
+
+            <h5>5. AI Integration</h5>
+            <p>AWS Bedrock powers our intelligent code reviews:</p>
+
+            <pre><code lang="python">
+def invoke_bedrock_for_review(self, prompt, bedrock, bedrock_runtime,
+                              bedrock_model_name):
+    foundation_models = bedrock.list_foundation_models()
+    matching_model = next(
+        (model for model in foundation_models["modelSummaries"]
+         if model.get("modelName") == bedrock_model_name),
+        None
+    )
+
+    request_payload = {
+        "anthropic_version": "bedrock-2023-05-31",
+        "max_tokens": 4000,
+        "messages": [
+            {"role": "user", "content": [{"type": "text", "text": prompt}]}
+        ],
+        "temperature": 1.0,
+        "top_p": 0.9,
+    }
+</code></pre>
+
+            <h5>6. Data Persistence</h5>
+            <p>All review data and metrics are stored in DynamoDB:</p>
+
+            <pre><code lang="python">
+def write_to_dynamodb(self, partition_key, data, bedrock_response=None,
+                     error_message=None):
+    timestamp = int(time.time() * 1000)
+    item = {
+        "PK": str(partition_key),
+        "SK": str(timestamp),
+        "status": "success" if not error_message else "failure",
+        "timeStamp": human_readable_timestamp,
+    }
+
+    if bedrock_response:
+        input_tokens = bedrock_response["usage"]["input_tokens"]
+        output_tokens = bedrock_response["usage"]["output_tokens"]
+        input_cost, output_cost, total_cost = (
+            MrReviewer().calculate_review_price(
+                input_tokens, output_tokens
+            )
+        )
+</code></pre>
+
+            <h4>What is AWS Bedrock?</h4>
+            <p>For our code review system, we leverage AWS Bedrock, Amazon's fully managed service for foundation
+                models. Here's why we chose it:</p>
+            <ul class="feature-list">
+                <li><strong>Serverless Integration:</strong> As a fully managed service, Bedrock seamlessly integrates
+                    with our serverless architecture, requiring no model hosting or infrastructure management</li>
+                <li><strong>Model Flexibility:</strong> Access to various foundation models from providers like
+                    Anthropic, AI21 Labs, and Cohere allows us to choose the best model for our code review needs
+                    (currently using Claude 3.5 Sonnet)</li>
+                <li><strong>Enterprise Security:</strong> Built-in security features like VPC endpoints, IAM-based
+                    access control, and AWS KMS encryption align with our enterprise security requirements</li>
+                <li><strong>Native AWS Integration:</strong> Direct integration with our existing AWS services (Lambda,
+                    Step Functions) simplified implementation and monitoring</li>
+                <li><strong>Cost Management:</strong> Pay-per-use pricing model fits our serverless approach, with
+                    detailed usage metrics helping optimize costs</li>
+            </ul>
+
+            <pre><code lang="python">
+# Example of our Bedrock initialization and model selection
+def get_bedrock_model(self, bedrock_client, model_name):
+    try:
+        foundation_models = bedrock_client.list_foundation_models()
+        matching_model = next(
+            (model for model in foundation_models["modelSummaries"]
+             if model.get("modelName") == model_name),
+            None
+        )
+        if not matching_model:
+            raise ValueError(f"Model {model_name} not found in available models")
+        return matching_model
+    except Exception as e:
+        self.logger.error(f"Error getting Bedrock model: {str(e)}")
+        raise
+</code></pre>
+
+            <!-- New topic about foundational models and additional LLM info -->
+            <h4>What Are Foundational Models?</h4>
+            <p>A foundational model is a large-scale deep learning model that has been trained on huge amounts of data.
+                It can be adapted to many tasks because it learns broad knowledge and patterns. These models serve as a
+                base for various applications, including text generation, question answering, and more.</p>
+
+            <h5>How Large Language Models Work</h5>
+            <p>Large Language Models (LLMs) predict the next word (or token) in a text based on context. They have been
+                trained on large datasets of text so they can guess what comes next in a sentence. This guessing is the
+                foundation for many applications, including chatbots and code reviews.</p>
+
+            <p>LLMs have parameters like <strong>temperature</strong> and <strong>top-k</strong> that control how they
+                generate text:</p>
+            <ul class="feature-list">
+                <li><strong>Temperature:</strong> Acts like a creativity slider. A low temperature (e.g., 0) makes the
+                    LLM pick the most likely next word each time, which can be very predictable. A higher temperature
+                    (close to 1) makes it pick less likely words sometimes, which can make responses more creative but
+                    also less consistent.</li>
+                <li><strong>Top-k:</strong> Controls how many top words are considered at each step. For example, if
+                    k=3,
+                    the LLM only considers the top 3 most likely words, ignoring other possibilities.</li>
+            </ul>
+
+            <h4>Key Features</h4>
+            <ul class="feature-list">
+                <li><strong>Webhook Processing:</strong> API Gateway with custom domain, rate limiting, and API key
+                    authentication
+                    for secure webhook handling</li>
+                <li><strong>Automated Pipeline:</strong> Step Functions orchestrating specialized Lambda functions for
+                    merge
+                    requests, emoji reactions, and comments</li>
+                <li><strong>Data Management:</strong> DynamoDB tables with TTL capabilities and stream processing for
+                    automated
+                    cleanups</li>
+                <li><strong>Observability:</strong> CloudWatch alarms for 4xx/5xx errors, detailed API logging, and
+                    X-Ray tracing
+                    enabled</li>
+                <li><strong>AI Integration:</strong> Amazon Bedrock integration with Claude 3.5 Sonnet for code reviews
+                    with proper
+                    IAM permissions</li>
+            </ul>
+
+            <h4>Lessons Learned</h4>
+            <ul class="feature-list">
+                <li><strong>API Pagination:</strong> Always handle API pagination properly - GitLab's /notes/ API
+                    default limit of
+                    20 caused duplicate comments when MRs had more notes</li>
+                <li><strong>State Machine Design:</strong> Using Step Functions for orchestration provides better error
+                    handling and
+                    retry capabilities than direct Lambda chaining</li>
+                <li><strong>Webhook Filtering:</strong> Proper filtering of incoming webhooks is crucial - duplicate
+                    triggers from
+                    related tools (like MergeHappy) needed explicit handling</li>
+                <li><strong>CDK Constructs:</strong> Breaking down infrastructure into focused constructs significantly
+                    improves
+                    maintainability and reuse</li>
+                <li><strong>Resource Sizing:</strong> Lambda configurations need careful tuning - from 128MB for webhook
+                    processing
+                    to 2GB for AI review tasks</li>
+            </ul>
+
+            <h4>Future Improvements</h4>
+            <ul class="feature-list">
+                <li><strong>Model Selection:</strong> Adding support for multiple Bedrock foundation models beyond
+                    Claude 3.5
+                    Sonnet, allowing teams to choose based on speed vs depth tradeoffs</li>
+                <li><strong>Prompt Customization:</strong> Enabling teams to customize review prompts per repository,
+                    programming
+                    language, or review type (security, performance, etc.)</li>
+                <li><strong>Cost Controls:</strong> Implementing repository-based quotas and model selection policies to
+                    optimize
+                    Bedrock usage costs</li>
+                <li><strong>Review Templates:</strong> Creating specialized prompt templates for different review
+                    scenarios (new
+                    features, bug fixes, refactoring)</li>
+                <li><strong>Advanced Filtering:</strong> Expanding webhook filtering to support complex rules like file
+                    types,
+                    change size, and PR labels</li>
+            </ul>
+
+            <h4>Conclusion</h4>
+            <p>Our serverless code review assistant has significantly improved our development workflow by providing
+                consistent, automated reviews while maintaining cost effectiveness. The evolution from a simple
+                pipeline-based approach to a sophisticated serverless architecture demonstrates the importance of
+                learning from real-world usage and adapting to team needs.</p>
+
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
